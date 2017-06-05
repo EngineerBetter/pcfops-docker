@@ -1,0 +1,24 @@
+---
+jobs:
+- name: build-pcfops-image
+  public: true
+  serial: true
+  plan:
+  - get: pcfops-docker
+    trigger: true
+  - put: pcfops-image
+
+resources:
+- name: pcfops-docker
+  type: git
+  source:
+    uri: git repo uri
+    branch: master
+
+- name: pcfops-image
+  type: docker-image
+  source:
+    email: {{docker-hub-email}}
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
+    repository: {{docker-repository}}
