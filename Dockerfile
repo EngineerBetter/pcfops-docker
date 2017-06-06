@@ -2,6 +2,7 @@ FROM cloudfoundry/cflinuxfs2
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    gettext \
     libreadline6 \
     libreadline6-dev \
     libsqlite3-dev \
