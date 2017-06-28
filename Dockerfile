@@ -59,4 +59,7 @@ RUN curl -L -o cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&
     && rm cf.tgz \
     && mv cf /usr/bin/cf
 
+RUN gem install --no-document --no-update-sources --verbose cf-uaac \
+    && rm -rf /usr/lib/ruby/gems/2.3.0/cache/
+
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
