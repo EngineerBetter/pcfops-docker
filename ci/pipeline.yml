@@ -7,7 +7,8 @@ jobs:
   - get: pcfops-docker
     trigger: true
   - put: pcfops-image
-    params: {build: pcfops-docker}
+    params:
+      build: pcfops-docker
 
 resources:
 - name: pcfops-docker
@@ -19,6 +20,6 @@ resources:
 - name: pcfops-image
   type: docker-image
   source:
-    username: {{docker-hub-username}}
-    password: {{docker-hub-password}}
-    repository: {{docker-repository}}
+    username: {{dockerhub_user}}
+    password: {{dockerhub_password}}
+    repository: engineerbetter/pcf-ops
