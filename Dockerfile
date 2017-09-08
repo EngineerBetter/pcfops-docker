@@ -54,6 +54,12 @@ RUN curl -fsSL "https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
     && rm golang.tar.gz \
     && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
+RUN go get -d github.com/onsi/ginkgo \
+ && cd $GOPATH/src/github.com/onsi/ginkgo \
+ && git checkout v1.4.0 \
+ && go install github.com/onsi/ginkgo/ginkgo \
+ && rm -rf $GOPATH/src/* $GOPATH/pkg/*
+
 RUN curl -L -o cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.26.0&source=github-rel" \
     && tar -xzf cf.tgz \
     && rm cf.tgz \
