@@ -1,5 +1,8 @@
 FROM cloudfoundry/cflinuxfs2
 
+ENV GOPATH /go
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     gettext \
@@ -46,8 +49,6 @@ RUN wget https://github.com/pivotal-cf/om/releases/download/0.23.0/om-linux \
     && mv om-linux /usr/bin/om \
     && chmod +x /usr/bin/om
 
-ENV GOPATH /go
-
 RUN curl -fsSL "https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz" -o golang.tar.gz \
     && echo "1862f4c3d3907e59b04a757cfda0ea7aa9ef39274af99a784f5be843c80c6772 golang.tar.gz" | sha256sum -c - \
     && tar -C /usr/local -xzf golang.tar.gz \
@@ -67,7 +68,5 @@ RUN curl -L -o cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&
 
 RUN gem install --no-document --no-update-sources --verbose cf-uaac \
     && rm -rf /usr/lib/ruby/gems/2.3.0/cache/
-
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 RUN go get github.com/EngineerBetter/stopover
