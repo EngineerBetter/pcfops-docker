@@ -36,6 +36,7 @@ RUN wget https://releases.hashicorp.com/terraform/0.9.9/terraform_0.9.9_linux_am
 RUN wget https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.24-linux-amd64 \
     && mv bosh-cli-2.0.24-linux-amd64 /usr/bin/bosh2 \
     && chmod +x /usr/bin/bosh2
+    && ln /usr/bin/bosh2 /usr/bin/bosh
 
 RUN wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
     && mv jq-linux64 /usr/bin/jq \
