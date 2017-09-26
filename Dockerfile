@@ -46,7 +46,8 @@ RUN wget https://github.com/concourse/concourse/releases/download/v3.0.1/fly_lin
     && mv fly_linux_amd64 /usr/bin/fly \
     && chmod +x /usr/bin/fly
 
-RUN wget https://github.com/pivotal-cf/om/releases/download/0.23.0/om-linux \
+ENV OM_VERSION=0.26.0
+RUN wget https://github.com/pivotal-cf/om/releases/download/$OM_VERSION/om-linux \
     && mv om-linux /usr/bin/om \
     && chmod +x /usr/bin/om
 
