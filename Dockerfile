@@ -76,3 +76,8 @@ RUN gem install --no-document --no-update-sources --verbose cf-uaac \
     && rm -rf /usr/lib/ruby/gems/2.3.0/cache/
 
 RUN go get github.com/EngineerBetter/stopover
+
+ENV YAML_VERSION=1.13.1
+RUN wget "https://github.com/mikefarah/yaml/releases/download/${YAML_VERSION}/yaml_linux_amd64" \
+    && mv yaml_linux_amd64 /usr/bin/yaml \
+    && chmod +x /usr/bin/yaml
