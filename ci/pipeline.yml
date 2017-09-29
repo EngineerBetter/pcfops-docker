@@ -40,11 +40,43 @@ jobs:
   - put: pcfops-docker-tag
     params: {bump: minor}
 
+- name: get-cf-cli
+  public: true
+  serial: true
+  plan:
+  - get: cf-cli-github-release
+    trigger: true
+  - task: download
+    config:
+      platform: linux
+      inputs:
+      - name: cf-cli-github-release
+      outputs:
+      - name: cf
+      image_resource:
+        type: docker-image
+        source: {repository: busybox}
+      run:
+        path: ash
+        args:
+        - -c
+        - |
+          version=$(cat cf-cli-github-release/version)
+          url="https://cli.run.pivotal.io/stable?release=linux64-binary&version=${version}&source=github-rel"
+          wget --output cli.tgz "$url"
+          tar -C cf -xzf cli.tgz
+          chmod +x cf/cf
+  - put: cf-cli-s3-release
+    params: {file: cf/cf}
+  - put: pcfops-docker-tag
+    params: {bump: minor}
+
 - name: build-pcfops-image
   public: true
   serial: true
   plan:
   - get: pcfops-docker-tag
+    passed: [get-pcfops-docker]
     trigger: true
   # Download Dockerfile
   - get: pcfops-docker-release
@@ -70,6 +102,9 @@ jobs:
           - --file=pcfops-docker-release/source.tar.gz
   # Download dependancies
   - get: terraform-s3-release
+    passed: [get-terraform]
+  - get: cf-cli-s3-release
+    passed: [get-cf-cli]
   # Copy dependancies
   - task: copy
     config:
@@ -77,6 +112,7 @@ jobs:
       inputs:
       - name: source
       - name: terraform-s3-release
+      - name: cf-cli-s3-release
       outputs:
       - name: source-with-deps
       image_resource:
@@ -89,6 +125,7 @@ jobs:
           - |
             cp --recursive source/. source-with-deps
             cp terraform-s3-release/terraform source-with-deps/deps
+            cp cf-cli-s3-release/cf source-with-deps/deps
   - put: pcfops-image
     params:
       build: source-with-deps
@@ -128,6 +165,21 @@ resources:
   type: s3
   source:
     versioned_file: terraform/terraform
+    bucket: pcf-docker-pipeline
+    access_key_id: {{aws_access_key_id}}
+    secret_access_key: {{aws_secret_access_key}}
+    region_name: eu-west-1
+
+- name: cf-cli-github-release
+  type: github-release
+  source:
+    owner: cloudfoundry
+    repository: cli
+    access_token: {{github_access_token}} # Avoids rate limits
+- name: cf-cli-s3-release
+  type: s3
+  source:
+    versioned_file: cf/cf
     bucket: pcf-docker-pipeline
     access_key_id: {{aws_access_key_id}}
     secret_access_key: {{aws_secret_access_key}}
