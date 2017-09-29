@@ -5,9 +5,11 @@ ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 COPY terraform /usr/bin/terraform
 COPY cf /usr/bin/cf
+COPY jq /usr/bin/jq
 
 RUN chmod +x /usr/bin/terraform
 RUN chmod +x /usr/bin/cf
+RUN chmod +x /usr/bin/jq
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -37,10 +39,6 @@ RUN wget https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.24-linux-amd64
     && mv bosh-cli-2.0.24-linux-amd64 /usr/bin/bosh2 \
     && chmod +x /usr/bin/bosh2 \
     && ln /usr/bin/bosh2 /usr/bin/bosh
-
-RUN wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
-    && mv jq-linux64 /usr/bin/jq \
-    && chmod +x /usr/bin/jq
 
 RUN wget https://github.com/concourse/concourse/releases/download/v3.0.1/fly_linux_amd64 \
     && mv fly_linux_amd64 /usr/bin/fly \

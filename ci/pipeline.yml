@@ -94,6 +94,10 @@ jobs:
   - get: cf-cli-s3-release
     trigger: true
     passed: [get-cf-cli]
+  - get: jq-github-release
+    trigger: true
+    params:
+      globs: [jq-linux64]
   # Copy dependancies
   - task: copy
     config:
@@ -102,6 +106,7 @@ jobs:
       - name: source
       - name: terraform-s3-release
       - name: cf-cli-s3-release
+      - name: jq-github-release
       outputs:
       - name: source-with-deps
       image_resource:
@@ -115,6 +120,7 @@ jobs:
             cp source/Dockerfile source-with-deps/Dockerfile
             cp terraform-s3-release/terraform source-with-deps/terraform
             cp cf-cli-s3-release/cf source-with-deps/cf
+            cp jq-github-release/jq-linux64 source-with-deps/jq
   - put: pcfops-image
     params:
       build: source-with-deps
@@ -175,3 +181,10 @@ resources:
     access_key_id: {{aws_access_key_id}}
     secret_access_key: {{aws_secret_access_key}}
     region_name: eu-west-1
+
+- name: jq-github-release
+  type: github-release
+  source:
+    owner: stedolan
+    repository: jq
+    access_token: {{github_access_token}} # Avoids rate limits
