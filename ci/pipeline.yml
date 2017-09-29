@@ -246,7 +246,7 @@ resources:
     secret_access_key: {{aws_secret_access_key}}
     region_name: eu-west-1
 
-- name: concourse-github-release
+- name: bbl-github-release
   type: github-release
   source:
     owner: cloudfoundry
