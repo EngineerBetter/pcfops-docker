@@ -6,10 +6,12 @@ ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 COPY terraform /usr/bin/terraform
 COPY cf /usr/bin/cf
 COPY jq /usr/bin/jq
+COPY om /usr/bin/om
 
 RUN chmod +x /usr/bin/terraform
 RUN chmod +x /usr/bin/cf
 RUN chmod +x /usr/bin/jq
+RUN chmod +x /usr/bin/om
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -43,11 +45,6 @@ RUN wget https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.24-linux-amd64
 RUN wget https://github.com/concourse/concourse/releases/download/v3.0.1/fly_linux_amd64 \
     && mv fly_linux_amd64 /usr/bin/fly \
     && chmod +x /usr/bin/fly
-
-ENV OM_VERSION=0.26.0
-RUN wget https://github.com/pivotal-cf/om/releases/download/$OM_VERSION/om-linux \
-    && mv om-linux /usr/bin/om \
-    && chmod +x /usr/bin/om
 
 RUN wget https://github.com/cloudfoundry/bosh-bootloader/releases/download/v4.7.3/bbl-v4.7.3_linux_x86-64 \
     && mv bbl-v4.7.3_linux_x86-64 /usr/bin/bbl \

@@ -98,6 +98,10 @@ jobs:
     trigger: true
     params:
       globs: [jq-linux64]
+  - get: om-github-release
+    trigger: true
+    params:
+      globs: [om-linux]
   # Copy dependancies
   - task: copy
     config:
@@ -107,6 +111,7 @@ jobs:
       - name: terraform-s3-release
       - name: cf-cli-s3-release
       - name: jq-github-release
+      - name: om-github-release
       outputs:
       - name: source-with-deps
       image_resource:
@@ -121,6 +126,7 @@ jobs:
             cp terraform-s3-release/terraform source-with-deps/terraform
             cp cf-cli-s3-release/cf source-with-deps/cf
             cp jq-github-release/jq-linux64 source-with-deps/jq
+            cp om-github-release/om-linux source-with-deps/om
   - put: pcfops-image
     params:
       build: source-with-deps
@@ -187,4 +193,11 @@ resources:
   source:
     owner: stedolan
     repository: jq
+    access_token: {{github_access_token}} # Avoids rate limits
+
+- name: om-github-release
+  type: github-release
+  source:
+    owner: pivotal-cf
+    repository: om
     access_token: {{github_access_token}} # Avoids rate limits
