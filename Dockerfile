@@ -9,6 +9,7 @@ COPY jq /usr/bin/jq
 COPY om /usr/bin/om
 COPY fly /usr/bin/fly
 COPY bosh /usr/bin/bosh
+COPY bbl /usr/bin/bbl
 
 RUN chmod +x /usr/bin/terraform
 RUN chmod +x /usr/bin/cf
@@ -16,6 +17,7 @@ RUN chmod +x /usr/bin/jq
 RUN chmod +x /usr/bin/om
 RUN chmod +x /usr/bin/fly
 RUN chmod +x /usr/bin/bosh
+RUN chmod +x /usr/bin/bbl
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -40,10 +42,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip install --upgrade pip \
     && pip install --upgrade virtualenv \
     && pip install awscli
-
-RUN wget https://github.com/cloudfoundry/bosh-bootloader/releases/download/v4.7.3/bbl-v4.7.3_linux_x86-64 \
-    && mv bbl-v4.7.3_linux_x86-64 /usr/bin/bbl \
-    && chmod +x /usr/bin/bbl
 
 RUN curl -fsSL "https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz" -o golang.tar.gz \
     && echo "1862f4c3d3907e59b04a757cfda0ea7aa9ef39274af99a784f5be843c80c6772 golang.tar.gz" | sha256sum -c - \
