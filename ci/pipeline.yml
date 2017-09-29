@@ -102,6 +102,10 @@ jobs:
     trigger: true
     params:
       globs: [om-linux]
+  - get: fly-github-release
+    trigger: true
+    params:
+      globs: [fly_linux_amd64]
   # Copy dependancies
   - task: copy
     config:
@@ -112,6 +116,7 @@ jobs:
       - name: cf-cli-s3-release
       - name: jq-github-release
       - name: om-github-release
+      - name: fly-github-release
       outputs:
       - name: source-with-deps
       image_resource:
@@ -127,10 +132,12 @@ jobs:
             cp cf-cli-s3-release/cf source-with-deps/cf
             cp jq-github-release/jq-linux64 source-with-deps/jq
             cp om-github-release/om-linux source-with-deps/om
+            cp fly-github-release/fly_linux_amd64 source-with-deps/fly
   - put: pcfops-image
     params:
       build: source-with-deps
       tag: pcfops-docker-tag/version
+      tag_as_latest: true
   - put: pcfops-docker-tag
     params: {file: pcfops-docker-tag/version}
 
@@ -200,4 +207,11 @@ resources:
   source:
     owner: pivotal-cf
     repository: om
+    access_token: {{github_access_token}} # Avoids rate limits
+
+- name: fly-github-release
+  type: github-release
+  source:
+    owner: concourse
+    repository: fly
     access_token: {{github_access_token}} # Avoids rate limits

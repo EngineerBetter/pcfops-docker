@@ -7,11 +7,13 @@ COPY terraform /usr/bin/terraform
 COPY cf /usr/bin/cf
 COPY jq /usr/bin/jq
 COPY om /usr/bin/om
+COPY fly /usr/bin/fly
 
 RUN chmod +x /usr/bin/terraform
 RUN chmod +x /usr/bin/cf
 RUN chmod +x /usr/bin/jq
 RUN chmod +x /usr/bin/om
+RUN chmod +x /usr/bin/fly
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
