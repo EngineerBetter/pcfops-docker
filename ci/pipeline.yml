@@ -1,14 +1,5 @@
 ---
 jobs:
-- name: get-pcfops-docker
-  public: true
-  serial: true
-  plan:
-  - get: pcfops-docker-release
-    trigger: true
-  - put: pcfops-docker-tag
-    params: {bump: patch}
-
 - name: get-terraform
   public: true
   serial: true
@@ -37,8 +28,6 @@ jobs:
           chmod +x terraform/terraform
   - put: terraform-s3-release
     params: {file: terraform/terraform}
-  - put: pcfops-docker-tag
-    params: {bump: minor}
 
 - name: get-cf-cli
   public: true
@@ -68,18 +57,16 @@ jobs:
           chmod +x cf/cf
   - put: cf-cli-s3-release
     params: {file: cf/cf}
-  - put: pcfops-docker-tag
-    params: {bump: minor}
 
 - name: build-pcfops-image
   public: true
   serial: true
   plan:
   - get: pcfops-docker-tag
-    passed: [get-pcfops-docker]
-    trigger: true
+    params: {bump: minor}
   # Download Dockerfile
   - get: pcfops-docker-release
+    trigger: true
     params:
       include_source_tarball: true
   - task: extract
@@ -102,8 +89,10 @@ jobs:
           - --file=pcfops-docker-release/source.tar.gz
   # Download dependancies
   - get: terraform-s3-release
+    trigger: true
     passed: [get-terraform]
   - get: cf-cli-s3-release
+    trigger: true
     passed: [get-cf-cli]
   # Copy dependancies
   - task: copy
@@ -123,13 +112,15 @@ jobs:
         args:
           - -c
           - |
-            cp --recursive source/. source-with-deps
-            cp terraform-s3-release/terraform source-with-deps/deps
-            cp cf-cli-s3-release/cf source-with-deps/deps
+            cp source/Dockerfile source-with-deps/Dockerfile
+            cp terraform-s3-release/terraform source-with-deps/terraform
+            cp cf-cli-s3-release/cf source-with-deps/cf
   - put: pcfops-image
     params:
       build: source-with-deps
       tag: pcfops-docker-tag/version
+  - put: pcfops-docker-tag
+    params: {file: pcfops-docker-tag/version}
 
 resources:
 - name: pcfops-docker-tag
