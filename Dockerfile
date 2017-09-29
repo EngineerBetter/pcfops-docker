@@ -3,6 +3,8 @@ FROM cloudfoundry/cflinuxfs2
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
+COPY deps .
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     gettext \
@@ -27,11 +29,7 @@ RUN pip install --upgrade pip \
     && pip install --upgrade virtualenv \
     && pip install awscli
 
-RUN wget https://releases.hashicorp.com/terraform/0.9.9/terraform_0.9.9_linux_amd64.zip \
-    && unzip terraform_0.9.9_linux_amd64.zip \
-    && rm terraform_0.9.9_linux_amd64.zip \
-    && chmod +x terraform \
-    && mv terraform /usr/bin/terraform
+RUN mv deps/terraform /usr/bin/terraform
 
 RUN wget https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.24-linux-amd64 \
     && mv bosh-cli-2.0.24-linux-amd64 /usr/bin/bosh2 \
