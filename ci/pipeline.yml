@@ -1,11 +1,53 @@
 ---
 jobs:
-- name: build-pcfops-image
+- name: get-pcfops-docker
   public: true
   serial: true
   plan:
   - get: pcfops-docker-release
     trigger: true
+  - put: pcfops-docker-tag
+    params: {bump: patch}
+
+- name: get-terraform
+  public: true
+  serial: true
+  plan:
+  - get: terraform-github-release
+    trigger: true
+  - task: download
+    config:
+      platform: linux
+      inputs:
+      - name: terraform-github-release
+      outputs:
+      - name: terraform
+      image_resource:
+        type: docker-image
+        source: {repository: busybox}
+      run:
+        path: ash
+        args:
+        - -c
+        - |
+          version=$(cat terraform-github-release/version)
+          url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}_linux_amd64.zip"
+          wget --output terraform.zip "$url"
+          unzip -d terraform terraform.zip
+          chmod +x terraform/terraform
+  - put: terraform-s3-release
+    params: {file: terraform/terraform}
+  - put: pcfops-docker-tag
+    params: {bump: minor}
+
+- name: build-pcfops-image
+  public: true
+  serial: true
+  plan:
+  - get: pcfops-docker-tag
+    trigger: true
+  # Download Dockerfile
+  - get: pcfops-docker-release
     params:
       include_source_tarball: true
   - task: extract
@@ -26,12 +68,43 @@ jobs:
           - --strip-components=1
           - --directory=source
           - --file=pcfops-docker-release/source.tar.gz
+  # Download dependancies
+  - get: terraform-s3-release
+  # Copy dependancies
+  - task: copy
+    config:
+      platform: linux
+      inputs:
+      - name: source
+      - name: terraform-s3-release
+      outputs:
+      - name: source-with-deps
+      image_resource:
+        type: docker-image
+        source: {repository: busybox}
+      run:
+        path: ash
+        args:
+          - -c
+          - |
+            cp --recursive source/. source-with-deps
+            cp terraform-s3-release/terraform source-with-deps/deps
   - put: pcfops-image
     params:
-      build: source
-      tag: pcfops-docker-release/version
+      build: source-with-deps
+      tag: pcfops-docker-tag/version
 
 resources:
+- name: pcfops-docker-tag
+  type: semver
+  source:
+    driver: s3
+    key: docker-tag
+    bucket: pcf-docker-pipeline
+    access_key_id: {{aws_access_key_id}}
+    secret_access_key: {{aws_secret_access_key}}
+    region_name: eu-west-1
+
 - name: pcfops-docker-release
   type: github-release
   source:
@@ -44,3 +117,18 @@ resources:
     username: {{dockerhub_user}}
     password: {{dockerhub_password}}
     repository: engineerbetter/pcf-ops
+
+- name: terraform-github-release
+  type: github-release
+  source:
+    owner: hashicorp
+    repository: terraform
+    access_token: {{github_access_token}} # Avoids rate limits
+- name: terraform-s3-release
+  type: s3
+  source:
+    versioned_file: terraform/terraform
+    bucket: pcf-docker-pipeline
+    access_key_id: {{aws_access_key_id}}
+    secret_access_key: {{aws_secret_access_key}}
+    region_name: eu-west-1
