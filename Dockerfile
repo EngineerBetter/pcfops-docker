@@ -29,7 +29,7 @@ RUN pip install --upgrade pip \
     && pip install --upgrade virtualenv \
     && pip install awscli
 
-RUN mv deps/terraform /usr/bin/terraform
+RUN mv deps/terraform /usr/bin/terraform && chmod +x /usr/bin/terraform
 
 RUN wget https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.24-linux-amd64 \
     && mv bosh-cli-2.0.24-linux-amd64 /usr/bin/bosh2 \
@@ -65,10 +65,7 @@ RUN go get -d github.com/onsi/ginkgo \
  && go install github.com/onsi/ginkgo/ginkgo \
  && rm -rf $GOPATH/src/* $GOPATH/pkg/*
 
-RUN curl -L -o cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.26.0&source=github-rel" \
-    && tar -xzf cf.tgz \
-    && rm cf.tgz \
-    && mv cf /usr/bin/cf
+RUN mv deps/cf /usr/bin/cf && chmod +x /usr/bin/cf
 
 RUN gem install --no-document --no-update-sources --verbose cf-uaac \
     && rm -rf /usr/lib/ruby/gems/2.3.0/cache/
