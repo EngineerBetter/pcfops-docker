@@ -4,19 +4,40 @@ jobs:
   public: true
   serial: true
   plan:
-  - get: pcfops-docker
+  - get: pcfops-docker-release
     trigger: true
+    params:
+      include_source_tarball: true
+  - task: extract
+    config:
+      platform: linux
+      inputs:
+      - name: pcfops-docker-release
+      outputs:
+      - name: source
+      image_resource:
+        type: docker-image
+        source: {repository: busybox}
+      run:
+        path: tar
+        args:
+          - --extract
+          - --gzip
+          - --strip-components=1
+          - --directory=source
+          - --file=pcfops-docker-release/source.tar.gz
   - put: pcfops-image
     params:
-      build: pcfops-docker
+      build: source
+      tag: pcfops-docker-release/version
 
 resources:
-- name: pcfops-docker
-  type: git
+- name: pcfops-docker-release
+  type: github-release
   source:
-    uri: https://github.com/EngineerBetter/pcfops-docker
-    branch: master
-
+    owner: EngineerBetter
+    repository: pcfops-docker
+    access_token: {{github_access_token}} # Avoids rate limits
 - name: pcfops-image
   type: docker-image
   source:
