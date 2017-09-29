@@ -25,7 +25,6 @@ jobs:
           url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}_linux_amd64.zip"
           wget --output terraform.zip "$url"
           unzip -d terraform terraform.zip
-          chmod +x terraform/terraform
   - put: terraform-s3-release
     params: {file: terraform/terraform}
 
@@ -54,9 +53,35 @@ jobs:
           url="https://cli.run.pivotal.io/stable?release=linux64-binary&version=${version}&source=github-rel"
           wget --output cli.tgz "$url"
           tar -C cf -xzf cli.tgz
-          chmod +x cf/cf
   - put: cf-cli-s3-release
     params: {file: cf/cf}
+
+- name: get-bosh-cli
+  public: true
+  serial: true
+  plan:
+  - get: bosh-cli-github-release
+    trigger: true
+  - task: download
+    config:
+      platform: linux
+      inputs:
+      - name: bosh-cli-github-release
+      outputs:
+      - name: bosh-cli
+      image_resource:
+        type: docker-image
+        source: {repository: busybox}
+      run:
+        path: ash
+        args:
+        - -c
+        - |
+          version=$(cat bosh-cli-github-release/version)
+          url="https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${version}-linux-amd64"
+          wget --output bosh-cli/bosh "$url"
+  - put: bosh-cli-s3-release
+    params: {file: bosh-cli/bosh}
 
 - name: build-pcfops-image
   public: true
@@ -106,6 +131,9 @@ jobs:
     trigger: true
     params:
       globs: [fly_linux_amd64]
+  - get: bosh-cli-s3-release
+    trigger: true
+    passed: [get-bosh-cli]
   # Copy dependancies
   - task: copy
     config:
@@ -117,6 +145,7 @@ jobs:
       - name: jq-github-release
       - name: om-github-release
       - name: fly-github-release
+      - name: bosh-cli-s3-release
       outputs:
       - name: source-with-deps
       image_resource:
@@ -133,6 +162,7 @@ jobs:
             cp jq-github-release/jq-linux64 source-with-deps/jq
             cp om-github-release/om-linux source-with-deps/om
             cp fly-github-release/fly_linux_amd64 source-with-deps/fly
+            cp bosh-s3-release/bosh
   - put: pcfops-image
     params:
       build: source-with-deps
@@ -215,3 +245,19 @@ resources:
     owner: concourse
     repository: fly
     access_token: {{github_access_token}} # Avoids rate limits
+
+
+- name: bosh-cli-github-release
+  type: github-release
+  source:
+    owner: cloudfoundry
+    repository: bosh-cli
+    access_token: {{github_access_token}} # Avoids rate limits
+- name: bosh-cli-s3-release
+  type: s3
+  source:
+    versioned_file: bosh-cli/bosh
+    bucket: pcf-docker-pipeline
+    access_key_id: {{aws_access_key_id}}
+    secret_access_key: {{aws_secret_access_key}}
+    region_name: eu-west-1

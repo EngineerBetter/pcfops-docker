@@ -8,12 +8,14 @@ COPY cf /usr/bin/cf
 COPY jq /usr/bin/jq
 COPY om /usr/bin/om
 COPY fly /usr/bin/fly
+COPY bosh /usr/bin/bosh
 
 RUN chmod +x /usr/bin/terraform
 RUN chmod +x /usr/bin/cf
 RUN chmod +x /usr/bin/jq
 RUN chmod +x /usr/bin/om
 RUN chmod +x /usr/bin/fly
+RUN chmod +x /usr/bin/bosh
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -38,15 +40,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip install --upgrade pip \
     && pip install --upgrade virtualenv \
     && pip install awscli
-
-RUN wget https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.24-linux-amd64 \
-    && mv bosh-cli-2.0.24-linux-amd64 /usr/bin/bosh2 \
-    && chmod +x /usr/bin/bosh2 \
-    && ln /usr/bin/bosh2 /usr/bin/bosh
-
-RUN wget https://github.com/concourse/concourse/releases/download/v3.0.1/fly_linux_amd64 \
-    && mv fly_linux_amd64 /usr/bin/fly \
-    && chmod +x /usr/bin/fly
 
 RUN wget https://github.com/cloudfoundry/bosh-bootloader/releases/download/v4.7.3/bbl-v4.7.3_linux_x86-64 \
     && mv bbl-v4.7.3_linux_x86-64 /usr/bin/bbl \
