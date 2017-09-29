@@ -3,7 +3,11 @@ FROM cloudfoundry/cflinuxfs2
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
-COPY deps .
+COPY terraform /usr/bin/terraform
+COPY cf /usr/bin/cf
+
+RUN chmod +x /usr/bin/terraform
+RUN chmod +x /usr/bin/cf
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
