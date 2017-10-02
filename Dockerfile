@@ -13,9 +13,6 @@ COPY bbl /usr/bin/bbl
 COPY install_binaries.sh .
 RUN ./install_binaries.sh
 
-COPY go.tar.gz .
-RUN tar -C /usr/local -xzf go.tar.gz && mkdir -p "$GOPATH/src" "$GOPATH/bin"
-
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -40,6 +37,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip install --upgrade pip \
     && pip install --upgrade virtualenv \
     && pip install awscli
+
+RUN curl -fsSL "https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz" -o golang.tar.gz \
+    && echo "1862f4c3d3907e59b04a757cfda0ea7aa9ef39274af99a784f5be843c80c6772 golang.tar.gz" | sha256sum -c - \
+    && tar -C /usr/local -xzf golang.tar.gz \
+    && rm golang.tar.gz \
+    && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
 RUN go get -d github.com/onsi/ginkgo \
  && cd $GOPATH/src/github.com/onsi/ginkgo \
