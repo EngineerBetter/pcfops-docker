@@ -118,6 +118,10 @@ jobs:
     trigger: true
     params:
       globs: [bbl-*_linux_x86-64]
+  - get: yaml-github-release
+    trigger: true
+    params:
+      globs: [yaml_linux_amd64]
   # Copy dependancies
   - task: copy
     config:
@@ -131,6 +135,7 @@ jobs:
       - name: concourse-github-release
       - name: bosh-cli-s3-release
       - name: bbl-github-release
+      - name: yaml-github-release
       outputs:
       - name: builddir
       image_resource:
@@ -149,6 +154,7 @@ jobs:
             cp concourse-github-release/fly_linux_amd64 builddir/fly
             cp bosh-cli-s3-release/bosh builddir/bosh
             cp bbl-github-release/bbl-*_linux_x86-64 builddir/bbl
+            cp yaml-github-release builddir/yaml
   - put: pcfops-image
     params:
       build: builddir
@@ -251,4 +257,11 @@ resources:
   source:
     owner: cloudfoundry
     repository: bosh-bootloader
+    access_token: {{github_access_token}} # Avoids rate limits
+
+- name: yaml-github-release
+  type: github-release
+  source:
+    owner: mikefarah
+    repository: yaml
     access_token: {{github_access_token}} # Avoids rate limits
