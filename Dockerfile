@@ -10,14 +10,9 @@ COPY om /usr/bin/om
 COPY fly /usr/bin/fly
 COPY bosh /usr/bin/bosh
 COPY bbl /usr/bin/bbl
+COPY install_binaries.sh .
+RUN ./install_binaries.sh
 
-RUN chmod +x /usr/bin/terraform
-RUN chmod +x /usr/bin/cf
-RUN chmod +x /usr/bin/jq
-RUN chmod +x /usr/bin/om
-RUN chmod +x /usr/bin/fly
-RUN chmod +x /usr/bin/bosh
-RUN chmod +x /usr/bin/bbl
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
