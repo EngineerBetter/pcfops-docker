@@ -141,7 +141,7 @@ jobs:
         args:
           - -c
           - |
-            cp pcfops-github/Dockerfile builddir/Dockerfile
+            cp -r pcfops-github/. builddir/
             cp terraform-s3-release/terraform builddir/terraform
             cp cf-cli-s3-release/cf builddir/cf
             cp jq-github-release/jq-linux64 builddir/jq
