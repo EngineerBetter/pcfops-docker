@@ -80,7 +80,7 @@ jobs:
           version=$(cat golang-github-release/version)
           url="https://storage.googleapis.com/golang/go${version}.linux-amd64.tar.gz"
           wget --output golang/go.tar.gz "$url"
-  - put: golang-s3-release
+  - put: cf-cli-s3-release
     params: {file: golang.go.tar.gz}
 
 - name: get-bosh-cli
