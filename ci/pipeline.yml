@@ -117,7 +117,7 @@ jobs:
   - get: bbl-github-release
     trigger: true
     params:
-      globs: [bbl-*_linux_x86-64]
+      globs: [bbl-v*_linux_x86-64]
   - get: yaml-github-release
     trigger: true
     params:
@@ -144,7 +144,7 @@ jobs:
       run:
         path: ash
         args:
-          - -c
+          - -xeuc
           - |
             cp -r pcfops-github/. builddir/
             cp terraform-s3-release/terraform builddir/terraform
@@ -153,7 +153,7 @@ jobs:
             cp om-github-release/om-linux builddir/om
             cp concourse-github-release/fly_linux_amd64 builddir/fly
             cp bosh-cli-s3-release/bosh builddir/bosh
-            cp bbl-github-release/bbl-*_linux_x86-64 builddir/bbl
+            cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
             cp yaml-github-release/yaml_linux_amd64 builddir/yaml
   - put: pcfops-image
     params:
