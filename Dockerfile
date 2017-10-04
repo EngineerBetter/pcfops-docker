@@ -39,8 +39,7 @@ RUN pip install --upgrade pip \
     && pip install --upgrade virtualenv \
     && pip install awscli
 
-RUN curl -fsSL "https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz" -o golang.tar.gz \
-    && echo "1862f4c3d3907e59b04a757cfda0ea7aa9ef39274af99a784f5be843c80c6772 golang.tar.gz" | sha256sum -c - \
+RUN curl -fsSL "https://storage.googleapis.com/golang/go1.9.1.linux-amd64.tar.gz" -o golang.tar.gz \
     && tar -C /usr/local -xzf golang.tar.gz \
     && rm golang.tar.gz \
     && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
