@@ -151,8 +151,8 @@ resources:
     driver: s3
     key: docker-tag
     bucket: pcf-docker-pipeline
-    access_key_id: {{aws_access_key_id}}
-    secret_access_key: {{aws_secret_access_key}}
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
     region_name: eu-west-1
 
 - name: pcfops-github
@@ -162,8 +162,8 @@ resources:
 - name: pcfops-image
   type: docker-image
   source:
-    username: {{dockerhub_user}}
-    password: {{dockerhub_password}}
+    username: ((dockerhub_user))
+    password: ((dockerhub_password))
     repository: engineerbetter/pcf-ops
 
 - name: terraform-github-release
@@ -171,14 +171,14 @@ resources:
   source:
     owner: hashicorp
     repository: terraform
-    access_token: {{github_access_token}} # Avoids rate limits
+    access_token: ((github_access_token)) # Avoids rate limits
 - name: terraform-s3-release
   type: s3
   source:
     versioned_file: terraform/terraform
     bucket: pcf-docker-pipeline
-    access_key_id: {{aws_access_key_id}}
-    secret_access_key: {{aws_secret_access_key}}
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
     region_name: eu-west-1
 
 - name: cf-cli-github-release
@@ -186,14 +186,14 @@ resources:
   source:
     owner: cloudfoundry
     repository: cli
-    access_token: {{github_access_token}} # Avoids rate limits
+    access_token: ((github_access_token)) # Avoids rate limits
 - name: cf-cli-s3-release
   type: s3
   source:
     versioned_file: cf/cf
     bucket: pcf-docker-pipeline
-    access_key_id: {{aws_access_key_id}}
-    secret_access_key: {{aws_secret_access_key}}
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
     region_name: eu-west-1
 
 - name: jq-github-release
@@ -201,21 +201,21 @@ resources:
   source:
     owner: stedolan
     repository: jq
-    access_token: {{github_access_token}} # Avoids rate limits
+    access_token: ((github_access_token)) # Avoids rate limits
 
 - name: om-github-release
   type: github-release
   source:
     owner: pivotal-cf
     repository: om
-    access_token: {{github_access_token}} # Avoids rate limits
+    access_token: ((github_access_token)) # Avoids rate limits
 
 - name: concourse-github-release
   type: github-release
   source:
     owner: concourse
     repository: concourse
-    access_token: {{github_access_token}} # Avoids rate limits
+    access_token: ((github_access_token)) # Avoids rate limits
 
 - name: bosh-s3-release
   type: s3
@@ -228,14 +228,14 @@ resources:
   source:
     owner: cloudfoundry
     repository: bosh-bootloader
-    access_token: {{github_access_token}} # Avoids rate limits
+    access_token: ((github_access_token)) # Avoids rate limits
 
 - name: yaml-github-release
   type: github-release
   source:
     owner: mikefarah
     repository: yaml
-    access_token: {{github_access_token}} # Avoids rate limits
+    access_token: ((github_access_token)) # Avoids rate limits
 
 
 - name: golang-s3-release
