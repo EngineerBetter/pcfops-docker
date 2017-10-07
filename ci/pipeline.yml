@@ -58,34 +58,6 @@ jobs:
   - put: cf-cli-s3-release
     params: {file: cf/cf}
 
-- name: get-bosh-cli
-  public: true
-  serial: true
-  plan:
-  - get: bosh-cli-github-release
-    trigger: true
-  - task: download
-    config:
-      platform: linux
-      inputs:
-      - name: bosh-cli-github-release
-      outputs:
-      - name: bosh-cli
-      image_resource:
-        type: docker-image
-        source: {repository: busybox}
-      run:
-        path: ash
-        args:
-        - -c
-        - |
-          set -euo pipefail
-          version=$(cat bosh-cli-github-release/version)
-          url="https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${version}-linux-amd64"
-          wget --output bosh-cli/bosh "$url"
-  - put: bosh-cli-s3-release
-    params: {file: bosh-cli/bosh}
-
 - name: build-pcfops-image
   public: true
   serial: true
@@ -114,9 +86,8 @@ jobs:
     trigger: true
     params:
       globs: [fly_linux_amd64]
-  - get: bosh-cli-s3-release
+  - get: bosh-s3-release
     trigger: true
-    passed: [get-bosh-cli]
   - get: bbl-github-release
     trigger: true
     params:
@@ -138,7 +109,7 @@ jobs:
       - name: jq-github-release
       - name: om-github-release
       - name: concourse-github-release
-      - name: bosh-cli-s3-release
+      - name: bosh-s3-release
       - name: bbl-github-release
       - name: yaml-github-release
       - name: golang-s3-release
@@ -158,7 +129,7 @@ jobs:
             cp jq-github-release/jq-linux64 builddir/jq
             cp om-github-release/om-linux builddir/om
             cp concourse-github-release/fly_linux_amd64 builddir/fly
-            cp bosh-cli-s3-release/bosh builddir/bosh
+            cp bosh-cli-s3-release/bosh-cli-*-linux-amd64 builddir/bosh
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
             cp yaml-github-release/yaml_linux_amd64 builddir/yaml
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
@@ -243,21 +214,11 @@ resources:
     repository: concourse
     access_token: {{github_access_token}} # Avoids rate limits
 
-
-- name: bosh-cli-github-release
-  type: github-release
-  source:
-    owner: cloudfoundry
-    repository: bosh-cli
-    access_token: {{github_access_token}} # Avoids rate limits
-- name: bosh-cli-s3-release
+- name: bosh-s3-release
   type: s3
   source:
-    versioned_file: bosh-cli/bosh
-    bucket: pcf-docker-pipeline
-    access_key_id: {{aws_access_key_id}}
-    secret_access_key: {{aws_secret_access_key}}
-    region_name: eu-west-1
+    bucket: bosh-cli-artifacts
+    regexp: 'bosh-cli-(2\.\d+(\.\d+)?)-linux-amd64'
 
 - name: bbl-github-release
   type: github-release
