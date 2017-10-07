@@ -122,6 +122,8 @@ jobs:
     trigger: true
     params:
       globs: [yaml_linux_amd64]
+  - get: golang-s3-release
+    trigger: true
   # Copy dependancies
   - task: copy
     config:
@@ -136,6 +138,7 @@ jobs:
       - name: bosh-cli-s3-release
       - name: bbl-github-release
       - name: yaml-github-release
+      - name: golang-s3-release
       outputs:
       - name: builddir
       image_resource:
@@ -155,6 +158,7 @@ jobs:
             cp bosh-cli-s3-release/bosh builddir/bosh
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
             cp yaml-github-release/yaml_linux_amd64 builddir/yaml
+            cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
   - put: pcfops-image
     params:
       build: builddir
@@ -265,3 +269,11 @@ resources:
     owner: mikefarah
     repository: yaml
     access_token: {{github_access_token}} # Avoids rate limits
+
+
+- name: golang-s3-release
+  type: s3
+  source:
+    endpoint: storage.googleapis.com
+    bucket: golang
+    regexp: 'go(1\.\d+(\.\d+)?)\.linux-amd64\.tar.gz'
