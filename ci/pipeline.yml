@@ -21,6 +21,7 @@ jobs:
         args:
         - -c
         - |
+          set -euo pipefail
           version=$(cat terraform-github-release/version)
           url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}_linux_amd64.zip"
           wget --output terraform.zip "$url"
@@ -49,6 +50,7 @@ jobs:
         args:
         - -c
         - |
+          set -euo pipefail
           version=$(cat cf-cli-github-release/version)
           url="https://cli.run.pivotal.io/stable?release=linux64-binary&version=${version}&source=github-rel"
           wget --output cli.tgz "$url"
@@ -77,6 +79,7 @@ jobs:
         args:
         - -c
         - |
+          set -euo pipefail
           version=$(cat bosh-cli-github-release/version)
           url="https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${version}-linux-amd64"
           wget --output bosh-cli/bosh "$url"
