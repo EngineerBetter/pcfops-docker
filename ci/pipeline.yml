@@ -67,6 +67,9 @@ jobs:
   # Download Dockerfile
   - get: pcfops-github
     trigger: true
+  # Trigger on base image updates
+  - get: base-image
+    trigger: true
   # Download dependancies
   - get: terraform-s3-release
     trigger: true
@@ -241,3 +244,8 @@ resources:
     endpoint: storage.googleapis.com
     bucket: golang
     regexp: 'go(1\.\d+(\.\d+)?)\.linux-amd64\.tar.gz'
+
+- name: base-image
+  type: docker-image
+  source:
+    repository: cloudfoundry/cflinuxfs2
