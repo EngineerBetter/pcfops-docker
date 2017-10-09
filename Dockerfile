@@ -19,31 +19,10 @@ RUN tar -C /usr/local -xzf go.tar.gz \
     && rm go.tar.gz \
     && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
-
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    gettext \
-    groff \
-    libreadline6 \
-    libreadline6-dev \
-    libsqlite3-dev \
-    libssl-dev \
-    libxml2-dev \
-    libxslt-dev \
-    libyaml-dev \
-    openssl \
-    python-dev \
-    python-pip \
-    sqlite3 \
-    unzip \
-    vim \
-    zlib1g-dev \
-    zlibc
-
-RUN pip install --upgrade pip \
-    && pip install --upgrade virtualenv \
-    && pip install awscli
+COPY awscli-bundle.zip .
+RUN unzip awscli-bundle.zip \
+    && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws \
+    && aws --version
 
 RUN go get -d github.com/onsi/ginkgo \
  && cd $GOPATH/src/github.com/onsi/ginkgo \

@@ -58,6 +58,31 @@ jobs:
   - put: cf-cli-s3-release
     params: {file: cf/cf}
 
+- name: get-aws-cli
+  public: true
+  serial: true
+  plan:
+  - get: aws-cli-git
+    trigger: true
+  - task: download
+    config:
+      platform: linux
+      outputs:
+      - name: aws-cli
+      image_resource:
+        type: docker-image
+        source: {repository: busybox}
+      run:
+        path: ash
+        args:
+        - -c
+        - |
+          set -euo pipefail
+          url="https://s3.amazonaws.com/aws-cli/awscli-bundle.zip"
+          wget --output aws-cli/awscli-bundle.zip "$url"
+  - put: aws-cli-s3-release
+    params: {file: aws-cli/awscli-bundle.zip}
+
 - name: build-pcfops-image
   public: true
   serial: true
@@ -101,6 +126,9 @@ jobs:
       globs: [yaml_linux_amd64]
   - get: golang-s3-release
     trigger: true
+  - get: aws-cli-s3-release
+    trigger: true
+    passed: [get-aws-cli]
   # Copy dependancies
   - task: copy
     config:
@@ -116,6 +144,7 @@ jobs:
       - name: bbl-github-release
       - name: yaml-github-release
       - name: golang-s3-release
+      - name: aws-cli-s3-release
       outputs:
       - name: builddir
       image_resource:
@@ -136,6 +165,7 @@ jobs:
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
             cp yaml-github-release/yaml_linux_amd64 builddir/yaml
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
+            cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
   - put: pcfops-image
     params:
       build: builddir
@@ -249,3 +279,17 @@ resources:
   type: docker-image
   source:
     repository: cloudfoundry/cflinuxfs2
+
+- name: aws-cli-git
+  type: git
+  source:
+    uri: https://github.com/aws/aws-cli.git
+    tag_filter: 1.*.*
+- name: aws-cli-s3-release
+  type: s3
+  source:
+    versioned_file: aws-cli/awscli-bundle.zip
+    bucket: pcf-docker-pipeline
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: eu-west-1
