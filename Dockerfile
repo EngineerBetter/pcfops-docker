@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY awscli-bundle.zip .
 RUN unzip awscli-bundle.zip \
-    && rm aws-cli-bundle.zip \
+    && rm awscli-bundle.zip \
     && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws \
     && rm -r awscli-bundle \
     && aws --version
