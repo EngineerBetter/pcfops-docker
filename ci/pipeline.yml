@@ -129,6 +129,8 @@ jobs:
   - get: aws-cli-s3-release
     trigger: true
     passed: [get-aws-cli]
+  - get: cf-uaac-github-release
+    trigger: true # This is installed using gem within the docker image.
   # Copy dependancies
   - task: copy
     config:
@@ -267,7 +269,6 @@ resources:
     repository: yaml
     access_token: ((github_access_token)) # Avoids rate limits
 
-
 - name: golang-s3-release
   type: s3
   source:
@@ -293,3 +294,10 @@ resources:
     access_key_id: ((aws_access_key_id))
     secret_access_key: ((aws_secret_access_key))
     region_name: eu-west-1
+
+- name: cf-uaac-github-release
+  type: github-release
+  source:
+    owner: cloudfoundry
+    repository: cf-uaac
+    access_token: ((github_access_token)) # Avoids rate limits
