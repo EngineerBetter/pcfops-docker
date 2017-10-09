@@ -19,6 +19,9 @@ RUN tar -C /usr/local -xzf go.tar.gz \
     && rm go.tar.gz \
     && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python-dev
+
 COPY awscli-bundle.zip .
 RUN unzip awscli-bundle.zip \
     && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws \
