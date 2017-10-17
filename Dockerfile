@@ -20,8 +20,7 @@ RUN tar -C /usr/local -xzf go.tar.gz \
     && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python-dev \
-    libnet-dns-perl
+    python-dev
 
 COPY awscli-bundle.zip .
 RUN unzip awscli-bundle.zip \
