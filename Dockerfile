@@ -11,6 +11,7 @@ COPY fly /usr/bin/fly
 COPY bosh /usr/bin/bosh
 COPY bbl /usr/bin/bbl
 COPY yaml /usr/bin/yaml
+COPY cliaas /usr/bin/cliaas
 COPY install_binaries.sh .
 RUN ./install_binaries.sh
 
