@@ -39,3 +39,4 @@ RUN gem install --no-document --no-update-sources --verbose cf-uaac \
     && rm -rf /usr/lib/ruby/gems/2.3.0/cache/
 
 RUN go get github.com/EngineerBetter/stopover
+RUN go get github.com/krishicks/yaml-patch/cmd/yaml-patch
