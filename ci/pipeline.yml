@@ -131,6 +131,10 @@ jobs:
     passed: [get-aws-cli]
   - get: cf-uaac-github-release
     trigger: true # This is installed using gem within the docker image.
+  - get: credhub-cli
+    trigger: true
+    params:
+      globs: [credhub-linux-*.tgz]
   # Copy dependancies
   - task: copy
     config:
@@ -147,6 +151,7 @@ jobs:
       - name: yaml-github-release
       - name: golang-s3-release
       - name: aws-cli-s3-release
+      - name: credhub-cli
       outputs:
       - name: builddir
       image_resource:
@@ -168,6 +173,7 @@ jobs:
             cp yaml-github-release/yaml_linux_amd64 builddir/yaml
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
+            tar -xzf -C builddir credhub-cli/credhub-linux-*.tgz
   - put: pcfops-image
     params:
       build: builddir
@@ -300,4 +306,11 @@ resources:
   source:
     owner: cloudfoundry
     repository: cf-uaac
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: credhub-cli
+  type: github-release
+  source:
+    owner: cloudfoundry-incubator
+    repository: credhub-cli
     access_token: ((github_access_token)) # Avoids rate limits
