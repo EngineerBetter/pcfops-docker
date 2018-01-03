@@ -123,7 +123,7 @@ jobs:
   - get: yaml-github-release
     trigger: true
     params:
-      globs: [yaml_linux_amd64]
+      globs: [yq_linux_amd64]
   - get: golang-s3-release
     trigger: true
   - get: aws-cli-s3-release
@@ -170,7 +170,7 @@ jobs:
             cp concourse-github-release/fly_linux_amd64 builddir/fly
             cp bosh-s3-release/bosh-cli-*-linux-amd64 builddir/bosh
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
-            cp yaml-github-release/yaml_linux_amd64 builddir/yaml
+            cp yaml-github-release/yq_linux_amd64 builddir/yaml
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
             tar -xzf -C builddir credhub-cli/credhub-linux-*.tgz
