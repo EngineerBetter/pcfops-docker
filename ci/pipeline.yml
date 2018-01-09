@@ -87,58 +87,59 @@ jobs:
   public: true
   serial: true
   plan:
-  - get: pcfops-docker-tag
-    params: {bump: minor}
-  # Download Dockerfile
-  - get: pcfops-github
-    trigger: true
-  # Trigger on base image updates
-  - get: base-image
-    trigger: true
-  # Download dependancies
-  - get: terraform-s3-release
-    trigger: true
-    passed: [get-terraform]
-  - get: cf-cli-s3-release
-    trigger: true
-    passed: [get-cf-cli]
-  - get: jq-github-release
-    trigger: true
-    params:
-      globs: [jq-linux64]
-  - get: om-github-release
-    trigger: true
-    params:
-      globs: [om-linux]
-  - get: concourse-github-release
-    trigger: true
-    params:
-      globs: [fly_linux_amd64]
-  - get: bosh-s3-release
-    trigger: true
-  - get: bbl-github-release
-    trigger: true
-    params:
-      globs: [bbl-v*_linux_x86-64]
-  - get: yaml-github-release
-    trigger: true
-    params:
-      globs: [yq_linux_amd64]
-  - get: golang-s3-release
-    trigger: true
-  - get: aws-cli-s3-release
-    trigger: true
-    passed: [get-aws-cli]
-  - get: cf-uaac-github-release
-    trigger: true # This is installed using gem within the docker image.
-  - get: credhub-cli
-    trigger: true
-    params:
-      globs: [credhub-linux-*.tgz]
-  - get: certstrap
-    trigger: true
-    params:
-      globs: [certstrap-v*-linux-amd64]
+  - aggregate:
+    - get: pcfops-docker-tag
+      params: {bump: minor}
+    # Download Dockerfile
+    - get: pcfops-github
+      trigger: true
+    # Trigger on base image updates
+    - get: base-image
+      trigger: true
+    # Download dependancies
+    - get: terraform-s3-release
+      trigger: true
+      passed: [get-terraform]
+    - get: cf-cli-s3-release
+      trigger: true
+      passed: [get-cf-cli]
+    - get: jq-github-release
+      trigger: true
+      params:
+        globs: [jq-linux64]
+    - get: om-github-release
+      trigger: true
+      params:
+        globs: [om-linux]
+    - get: concourse-github-release
+      trigger: true
+      params:
+        globs: [fly_linux_amd64]
+    - get: bosh-s3-release
+      trigger: true
+    - get: bbl-github-release
+      trigger: true
+      params:
+        globs: [bbl-v*_linux_x86-64]
+    - get: yaml-github-release
+      trigger: true
+      params:
+        globs: [yq_linux_amd64]
+    - get: golang-s3-release
+      trigger: true
+    - get: aws-cli-s3-release
+      trigger: true
+      passed: [get-aws-cli]
+    - get: cf-uaac-github-release
+      trigger: true # This is installed using gem within the docker image.
+    - get: credhub-cli
+      trigger: true
+      params:
+        globs: [credhub-linux-*.tgz]
+    - get: certstrap
+      trigger: true
+      params:
+        globs: [certstrap-v*-linux-amd64]
   # Copy dependencies
   - task: copy
     config:
