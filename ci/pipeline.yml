@@ -173,7 +173,7 @@ jobs:
             cp yaml-github-release/yq_linux_amd64 builddir/yaml
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
-            tar -xzC builddir -f credhub-cli/credhub-linux-*.tgz
+            tar -C builddir -xzf credhub-cli/credhub-linux-*.tgz
   - put: pcfops-image
     params:
       build: builddir
@@ -272,7 +272,7 @@ resources:
   type: github-release
   source:
     owner: mikefarah
-    repository: yaml
+    repository: yq
     access_token: ((github_access_token)) # Avoids rate limits
 
 - name: golang-s3-release
