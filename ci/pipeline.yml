@@ -135,7 +135,7 @@ jobs:
     trigger: true
     params:
       globs: [credhub-linux-*.tgz]
-  # Copy dependancies
+  # Copy dependencies
   - task: copy
     config:
       platform: linux
@@ -173,7 +173,7 @@ jobs:
             cp yaml-github-release/yq_linux_amd64 builddir/yaml
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
-            tar -xzf -C builddir credhub-cli/credhub-linux-*.tgz
+            tar -xzC builddir -f credhub-cli/credhub-linux-*.tgz
   - put: pcfops-image
     params:
       build: builddir
