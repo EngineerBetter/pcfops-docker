@@ -135,6 +135,10 @@ jobs:
     trigger: true
     params:
       globs: [credhub-linux-*.tgz]
+  - get: certstrap
+    trigger: true
+    params:
+      globs: [certstrap-v*-linux-amd64]
   # Copy dependencies
   - task: copy
     config:
@@ -152,6 +156,7 @@ jobs:
       - name: golang-s3-release
       - name: aws-cli-s3-release
       - name: credhub-cli
+      - name: certstrap
       outputs:
       - name: builddir
       image_resource:
@@ -171,6 +176,7 @@ jobs:
             cp bosh-s3-release/bosh-cli-*-linux-amd64 builddir/bosh
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
             cp yaml-github-release/yq_linux_amd64 builddir/yaml
+            cp certstrap-github-release/certstrap-v*-linux-amd64 builddir/certstrap
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
             tar -C builddir -xzf credhub-cli/credhub-linux-*.tgz
@@ -314,3 +320,10 @@ resources:
     owner: cloudfoundry-incubator
     repository: credhub-cli
     access_token: ((github_access_token)) # Avoids rate limits
+
+- name: certstrap
+  type: github-release
+  source:
+    owner: square
+    repository: certstrap
+    access_token: ((github_access_token))

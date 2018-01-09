@@ -12,6 +12,7 @@ COPY bosh /usr/bin/bosh
 COPY bbl /usr/bin/bbl
 COPY yaml /usr/bin/yaml
 COPY credhub /usr/bin/credhub
+COPY certstrap /usr/bin/certstrap
 COPY install_binaries.sh .
 RUN ./install_binaries.sh
 
