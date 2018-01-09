@@ -132,11 +132,11 @@ jobs:
       passed: [get-aws-cli]
     - get: cf-uaac-github-release
       trigger: true # This is installed using gem within the docker image.
-    - get: credhub-cli
+    - get: credhub-cli-github-release
       trigger: true
       params:
         globs: [credhub-linux-*.tgz]
-    - get: certstrap
+    - get: certstrap-github-release
       trigger: true
       params:
         globs: [certstrap-v*-linux-amd64]
@@ -156,8 +156,8 @@ jobs:
       - name: yaml-github-release
       - name: golang-s3-release
       - name: aws-cli-s3-release
-      - name: credhub-cli
-      - name: certstrap
+      - name: credhub-cli-github-release
+      - name: certstrap-github-release
       outputs:
       - name: builddir
       image_resource:
@@ -180,7 +180,7 @@ jobs:
             cp certstrap-github-release/certstrap-v*-linux-amd64 builddir/certstrap
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
-            tar -C builddir -xzf credhub-cli/credhub-linux-*.tgz
+            tar -C builddir -xzf credhub-cli-github-release/credhub-linux-*.tgz
   - put: pcfops-image
     params:
       build: builddir
@@ -315,14 +315,14 @@ resources:
     repository: cf-uaac
     access_token: ((github_access_token)) # Avoids rate limits
 
-- name: credhub-cli
+- name: credhub-cli-github-release
   type: github-release
   source:
     owner: cloudfoundry-incubator
     repository: credhub-cli
     access_token: ((github_access_token)) # Avoids rate limits
 
-- name: certstrap
+- name: certstrap-github-release
   type: github-release
   source:
     owner: square
