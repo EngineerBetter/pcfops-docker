@@ -43,3 +43,4 @@ RUN gem install --no-document --no-update-sources --verbose cf-uaac \
 
 RUN go get github.com/EngineerBetter/stopover
 RUN go get github.com/krishicks/yaml-patch/cmd/yaml-patch
+RUN go get github.com/EngineerBetter/yml2env
