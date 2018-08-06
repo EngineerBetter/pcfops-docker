@@ -22,10 +22,15 @@ RUN tar -C /usr/local -xzf go.tar.gz \
     && rm go.tar.gz \
     && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
+RUN echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse" \
+    >> /etc/apt/sources.list
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python-dev \
     parallel \
-    shellcheck
+    software-properties-common
+
+RUN apt-get install -t trusty-backports shellcheck
 
 COPY awscli-bundle.zip .
 RUN unzip awscli-bundle.zip \
