@@ -46,5 +46,9 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
     github.com/krishicks/yaml-patch/cmd/yaml-patch \
     github.com/EngineerBetter/yml2env
 
+RUN mv /go/bin/gometalinter{.v2,}
+
+RUN gometalinter --install
+
 RUN gem install --no-document --no-update-sources --verbose cf-uaac \
     && rm -rf /usr/lib/ruby/gems/2.3.0/cache/
