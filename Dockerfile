@@ -23,7 +23,9 @@ RUN tar -C /usr/local -xzf go.tar.gz \
     && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python-dev parallel
+    python-dev \
+    parallel \
+    shellcheck
 
 COPY awscli-bundle.zip .
 RUN unzip awscli-bundle.zip \
@@ -32,15 +34,12 @@ RUN unzip awscli-bundle.zip \
     && rm -r awscli-bundle \
     && aws --version
 
-RUN go get -d github.com/onsi/ginkgo \
- && cd $GOPATH/src/github.com/onsi/ginkgo \
- && git checkout v1.4.0 \
- && go install github.com/onsi/ginkgo/ginkgo \
- && rm -rf $GOPATH/src/* $GOPATH/pkg/*
+RUN go get github.com/onsi/ginkgo/ginkgo \
+    github.com/onsi/gomega \
+    github.com/alecthomas/gometalinter.v2 \
+    github.com/EngineerBetter/stopover \
+    github.com/krishicks/yaml-patch/cmd/yaml-patch \
+    github.com/EngineerBetter/yml2env
 
 RUN gem install --no-document --no-update-sources --verbose cf-uaac \
     && rm -rf /usr/lib/ruby/gems/2.3.0/cache/
-
-RUN go get github.com/EngineerBetter/stopover
-RUN go get github.com/krishicks/yaml-patch/cmd/yaml-patch
-RUN go get github.com/EngineerBetter/yml2env
