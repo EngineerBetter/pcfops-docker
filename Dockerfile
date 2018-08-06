@@ -27,8 +27,7 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python-dev \
-    parallel \
-    software-properties-common
+    parallel
 
 RUN apt-get install -t trusty-backports shellcheck
 
@@ -52,3 +51,6 @@ RUN gometalinter --install
 
 RUN gem install --no-document --no-update-sources --verbose cf-uaac \
     && rm -rf /usr/lib/ruby/gems/2.3.0/cache/
+
+COPY verify_image.sh /tmp/verify_image.sh
+RUN /tmp/verify_image.sh && rm /tmp/verify_image.sh
