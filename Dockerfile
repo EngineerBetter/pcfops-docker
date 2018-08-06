@@ -46,7 +46,7 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
     github.com/krishicks/yaml-patch/cmd/yaml-patch \
     github.com/EngineerBetter/yml2env
 
-RUN mv /go/bin/gometalinter{.v2,}
+RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter
 
 RUN gometalinter --install
 
