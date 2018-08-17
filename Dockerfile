@@ -29,10 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python-dev \
     parallel
 
-ENV scversion="stable"
-RUN wget "https://storage.googleapis.com/shellcheck/shellcheck-${scversion}.linux.x86_64.tar.xz" \
-    && tar --xz -xvf shellcheck-"${scversion}".linux.x86_64.tar.xz \
-    && cp shellcheck-"${scversion}"/shellcheck /usr/bin/
+RUN apt-get install -t trusty-backports shellcheck
 
 COPY awscli-bundle.zip .
 RUN unzip awscli-bundle.zip \
