@@ -27,7 +27,10 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python-dev \
-    parallel
+    parallel \
+    postgresql
+
+RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/postgresql/*/bin/postgres /usr/bin/postgres
 
 RUN apt-get install -t trusty-backports shellcheck
 
