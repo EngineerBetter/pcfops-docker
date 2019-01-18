@@ -1,4 +1,4 @@
-FROM cloudfoundry/cflinuxfs2
+FROM cloudfoundry/cflinuxfs3
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
