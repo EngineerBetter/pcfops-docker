@@ -29,11 +29,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   python-dev \
   parallel \
   postgresql \
-  ruby-dev
+  ruby-dev \
+  gnupg2 \
+  shellcheck
 
 RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/postgresql/*/bin/postgres /usr/bin/postgres
-
-RUN apt-get install -t trusty-backports shellcheck
 
 COPY awscli-bundle.zip .
 RUN unzip awscli-bundle.zip \

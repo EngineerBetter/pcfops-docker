@@ -221,6 +221,10 @@ jobs:
       build: builddir
       tag: pcfops-docker-tag/version
       tag_as_latest: true
+  - put: pcfops-github
+    params:
+      tag: pcfops-docker-tag/version
+      only_tag: true
   - put: pcfops-docker-tag
     params: {file: pcfops-docker-tag/version}
 
@@ -239,6 +243,7 @@ resources:
   type: git
   source:
     uri: https://github.com/EngineerBetter/pcfops-docker.git
+
 - name: pcfops-image
   type: docker-image
   source:
@@ -252,6 +257,7 @@ resources:
     owner: hashicorp
     repository: terraform
     access_token: ((github_access_token)) # Avoids rate limits
+
 - name: terraform-s3-release
   type: s3
   source:
