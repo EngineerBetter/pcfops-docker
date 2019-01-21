@@ -2,28 +2,31 @@
 
 set -eux
 
-command -v terraform \
+command -v \
+  aws \
+  bbl \
+  bosh \
+  certstrap \
   cf \
+  credhub \
+  fly \
+  gcloud \
+  ginkgo \
+  go \
+  gometalinter \
+  gpg \
   jq \
   om \
-  fly \
-  bosh \
-  bbl \
-  yaml \
-  yq \
-  credhub \
-  certstrap \
-  python \
   parallel \
+  python \
+  ruby \
   shellcheck \
-  aws \
-  go \
-  ginkgo \
-  gometalinter \
   stopover \
+  terraform \
+  uaac \
+  yaml \
   yaml-patch \
   yml2env \
-  ruby \
-  uaac
+  yq
 
 echo "GOPATH is $GOPATH"

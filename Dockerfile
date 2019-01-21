@@ -56,11 +56,11 @@ RUN gometalinter --install
 RUN gem install --no-document --no-update-sources --verbose cf-uaac \
   && rm -rf /usr/lib/ruby/gems/2.5.0/cache/
 
-COPY verify_image.sh /tmp/verify_image.sh
-RUN /tmp/verify_image.sh && rm /tmp/verify_image.sh
-
 RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"  \
   && echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list  \
   && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -  \
   && cat /etc/apt/sources.list.d/google-cloud-sdk.list  \
   && apt-get update && apt-get install -y --no-install-recommends google-cloud-sdk
+
+COPY verify_image.sh /tmp/verify_image.sh
+RUN /tmp/verify_image.sh && rm /tmp/verify_image.sh
