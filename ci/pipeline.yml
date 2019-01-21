@@ -243,6 +243,7 @@ resources:
   type: git
   source:
     uri: https://github.com/EngineerBetter/pcfops-docker.git
+    branch: master
 
 - name: pcfops-image
   type: docker-image
