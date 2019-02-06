@@ -336,7 +336,7 @@ resources:
 - name: base-image
   type: docker-image
   source:
-    repository: cloudfoundry/cflinuxfs2
+    repository: cloudfoundry/cflinuxfs3
 
 - name: aws-cli-git
   type: git
