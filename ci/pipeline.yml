@@ -144,7 +144,7 @@ jobs:
     - get: concourse-github-release
       trigger: true
       params:
-        globs: [fly_linux_amd64]
+        globs: [fly-*-linux-amd64]
     - get: bosh-s3-release
       trigger: true
     - get: bbl-github-release
@@ -207,7 +207,7 @@ jobs:
             cp cf-cli-s3-release/cf builddir/cf
             cp jq-github-release/jq-linux64 builddir/jq
             cp om-github-release/om-linux builddir/om
-            cp concourse-github-release/fly_linux_amd64 builddir/fly
+            tar xzf concourse-github-release/fly-*-linux-amd64.tgz -C builddir/
             cp bosh-s3-release/bosh-cli-*-linux-amd64 builddir/bosh
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
             cp yaml-github-release/yq_linux_amd64 builddir/yaml
