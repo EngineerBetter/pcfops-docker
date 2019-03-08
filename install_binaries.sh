@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eux
 
-names=( terraform cf jq om fly bosh bbl yaml yq credhub certstrap)
+names=( terraform cf jq om fly bosh bbl yq credhub certstrap)
 for name in "${names[@]}"
 do
   chmod +x /usr/bin/$name

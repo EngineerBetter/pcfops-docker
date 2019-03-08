@@ -24,7 +24,6 @@ command -v \
   stopover \
   terraform \
   uaac \
-  yaml \
   yaml-patch \
   yml2env \
   yq
