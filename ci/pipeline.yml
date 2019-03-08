@@ -151,7 +151,7 @@ jobs:
       trigger: true
       params:
         globs: [bbl-v*_linux_x86-64]
-    - get: yaml-github-release
+    - get: yq-github-release
       trigger: true
       params:
         globs: [yq_linux_amd64]
@@ -161,7 +161,7 @@ jobs:
       trigger: true
       passed: [get-aws-cli]
     - get: cf-uaac-github-release
-      trigger: true # This is installed using gem within the docker image.
+      trigger: true
     - get: credhub-cli-github-release
       trigger: true
       params:
@@ -186,7 +186,7 @@ jobs:
       - name: concourse-github-release
       - name: bosh-s3-release
       - name: bbl-github-release
-      - name: yaml-github-release
+      - name: yq-github-release
       - name: golang-s3-release
       - name: aws-cli-s3-release
       - name: credhub-cli-github-release
@@ -210,7 +210,7 @@ jobs:
             tar xzf concourse-github-release/fly-*-linux-amd64.tgz -C builddir/
             cp bosh-s3-release/bosh-cli-*-linux-amd64 builddir/bosh
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
-            cp yaml-github-release/yq_linux_amd64 builddir/yaml
+            cp yq-github-release/yq_linux_amd64 builddir/yq
             cp certstrap-github-release/certstrap-v*-linux-amd64 builddir/certstrap
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
@@ -319,7 +319,7 @@ resources:
     repository: bosh-bootloader
     access_token: ((github_access_token)) # Avoids rate limits
 
-- name: yaml-github-release
+- name: yq-github-release
   type: github-release
   source:
     owner: mikefarah
