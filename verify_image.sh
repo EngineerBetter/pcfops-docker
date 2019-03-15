@@ -22,6 +22,7 @@ command -v \
   ruby \
   shellcheck \
   stopover \
+  stopover.v2 \
   terraform \
   uaac \
   yaml-patch \
