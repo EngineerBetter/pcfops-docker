@@ -46,7 +46,7 @@ RUN unzip awscli-bundle.zip \
 RUN go get github.com/onsi/ginkgo/ginkgo \
   github.com/onsi/gomega \
   gopkg.in/alecthomas/gometalinter.v2 \
-  gopkg.in/EngineerBetter/stopover.v1.0.0 \
+  gopkg.in/EngineerBetter/stopover.v1 \
   github.com/krishicks/yaml-patch/cmd/yaml-patch \
   github.com/EngineerBetter/yml2env
 
