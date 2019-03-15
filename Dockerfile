@@ -43,17 +43,14 @@ RUN unzip awscli-bundle.zip \
   && rm -r awscli-bundle \
   && aws --version
 
-# Install stopover v2.X with different name for backwards compatibility
-RUN go get -d gopkg.in/EngineerBetter/stopover.v2 \
-  && cd $GOPATH/src/gopkg.in/EngineerBetter/stopover.v2 \
-  && go build -o stopover-v2
-
 RUN go get github.com/onsi/ginkgo/ginkgo \
   github.com/onsi/gomega \
   gopkg.in/alecthomas/gometalinter.v2 \
-  gopkg.in/EngineerBetter/stopover.v1 \
   github.com/krishicks/yaml-patch/cmd/yaml-patch \
-  github.com/EngineerBetter/yml2env
+  github.com/EngineerBetter/yml2env \
+  gopkg.in/EngineerBetter/stopover.v2 \
+  gopkg.in/EngineerBetter/stopover.v1 \
+  && mv /go/bin/stopover.v1 /go/bin/stopover
 
 # Install gometalinter
 RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
