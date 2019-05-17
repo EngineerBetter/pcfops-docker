@@ -31,10 +31,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   gnupg2 \
   shellcheck \
   google-cloud-sdk \
+  kubectl \
   && rm -rf /var/lib/apt/lists/*
-
-# Install kubectl
-RUN gcloud components install kubectl --quiet
 
 # Symlinks required by postgres
 RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/postgresql/*/bin/postgres /usr/bin/postgres
