@@ -51,6 +51,7 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
   github.com/EngineerBetter/yml2env \
   gopkg.in/EngineerBetter/stopover.v2 \
   gopkg.in/EngineerBetter/stopover.v1 \
+  github.com/santhosh-tekuri/jsonschema/cmd/jv \
   && mv /go/bin/stopover.v1 /go/bin/stopover
 
 # Install gometalinter
