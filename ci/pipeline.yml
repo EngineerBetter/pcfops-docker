@@ -24,7 +24,7 @@ jobs:
           set -euo pipefail
           version=$(cat kubernetes-github-release/version)
           url="https://dl.k8s.io/v${version}/kubernetes-client-darwin-amd64.tar.gz"
-          wget --output-file kubernetes-client.tar.gz "$url"
+          wget -O kubernetes-client.tar.gz "$url"
           tar -xf kubernetes-client.tar.gz
           cp kubernetes/client/bin/kubectl kubectl/
   - put: kubectl-s3-release
@@ -54,7 +54,7 @@ jobs:
           set -euo pipefail
           version=$(cat terraform-github-release/version)
           url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}_linux_amd64.zip"
-          wget --output-file terraform.zip "$url"
+          wget -O terraform.zip "$url"
           unzip -d terraform terraform.zip
   - put: terraform-s3-release
     params: {file: terraform/terraform}
@@ -83,7 +83,7 @@ jobs:
           set -euo pipefail
           version=$(cat cf-cli-github-release/version)
           url="https://cli.run.pivotal.io/stable?release=linux64-binary&version=${version}&source=github-rel"
-          wget --output-file cli.tgz "$url"
+          wget -O cli.tgz "$url"
           tar -C cf -xzf cli.tgz
   - put: cf-cli-s3-release
     params: {file: cf/cf}
@@ -109,7 +109,7 @@ jobs:
         - |
           set -euo pipefail
           url="https://s3.amazonaws.com/aws-cli/awscli-bundle.zip"
-          wget --output-file aws-cli/awscli-bundle.zip "$url"
+          wget -O aws-cli/awscli-bundle.zip "$url"
   - put: aws-cli-s3-release
     params: {file: aws-cli/awscli-bundle.zip}
 
