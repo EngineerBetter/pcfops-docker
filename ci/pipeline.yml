@@ -173,6 +173,8 @@ jobs:
     - get: kubectl-s3-release
       trigger: true
       passed: [get-kubectl]
+    - get: yaml2json-github-release
+      trigger: true
   # Copy dependencies
   - task: copy
     config:
@@ -192,6 +194,7 @@ jobs:
       - name: credhub-cli-github-release
       - name: certstrap-github-release
       - name: kubectl-s3-release
+      - name: yaml2json-github-release
       outputs:
       - name: builddir
       image_resource:
@@ -216,6 +219,7 @@ jobs:
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
             tar -C builddir -xzf credhub-cli-github-release/credhub-linux-*.tgz
             cp kubectl-s3-release/kubectl builddir/kubectl
+            cp yaml2json-github-release/yaml2json-linux-amd64 builddir/yaml2json
   - put: pcfops-image
     params:
       build: builddir
@@ -387,3 +391,10 @@ resources:
     access_key_id: ((aws_access_key_id))
     secret_access_key: ((aws_secret_access_key))
     region_name: eu-west-1
+
+- name: yaml2json-github-release
+  type: github-release
+  source:
+    owner: wakeful
+    repository: yaml2json
+    access_token: ((github_access_token))

@@ -4,7 +4,7 @@ ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 # Copy in binaries and make sure they are executable
-COPY terraform cf jq om fly bosh bbl yq credhub certstrap /usr/bin/
+COPY terraform cf jq om fly bosh bbl yq credhub certstrap yaml2json /usr/bin/
 COPY install_binaries.sh .
 RUN ./install_binaries.sh && rm install_binaries.sh
 

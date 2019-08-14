@@ -26,6 +26,7 @@ command -v \
   terraform \
   uaac \
   yaml-patch \
+  yaml2json \
   yml2env \
   yq
 
