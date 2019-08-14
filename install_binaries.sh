@@ -9,12 +9,12 @@ do
 
   # See https://github.com/wakeful/yaml2json/issues/4
   if [ "$name" == "yaml2json" ]; then
-    set +u
+    set +e
   fi
 
   $name --version
 
   if [ "$name" == "yaml2json" ]; then
-    set -u
+    set -e
   fi
 done
