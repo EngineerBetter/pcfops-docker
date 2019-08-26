@@ -280,6 +280,8 @@ resources:
     owner: cloudfoundry
     repository: cli
     access_token: ((github_access_token)) # Avoids rate limits
+    tag_filter: v?([^v].*)$
+
 - name: cf-cli-s3-release
   type: s3
   source:
