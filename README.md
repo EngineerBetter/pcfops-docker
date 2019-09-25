@@ -7,5 +7,5 @@ These instructions assume you are already authenticated with EBCI with the `fly`
 ```sh
 git clone git@github.com:EngineerBetter/pcfops-docker.git
 cd pcfops-docker
-fly --target ebci set-pipeline --pipeline pcfops-docker -c ci/pipeline.yml
+fly --target ebci set-pipeline --pipeline pcfops-docker --config ci/pipeline.yml
 ```
