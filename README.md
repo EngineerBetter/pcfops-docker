@@ -2,7 +2,7 @@
 
 ## To update the CI pipeline
 
-These instructions assume you are already authenticated with EBI with the `fly` CLI on your machine.
+These instructions assume you are already authenticated with EBCI with the `fly` CLI on your machine.
 
 ```sh
 git clone git@github.com:EngineerBetter/pcfops-docker.git
