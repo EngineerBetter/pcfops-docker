@@ -225,7 +225,8 @@ jobs:
             tar -C builddir -xzf credhub-cli-github-release/credhub-linux-*.tgz
             cp kubectl-s3-release/kubectl builddir/kubectl
             cp yaml2json-github-release/yaml2json-linux-amd64 builddir/yaml2json
-            tar -C builddir -xzf golangci-lint-release/golangci-lint-*-linux-amd64.tar.gz
+            tar -xzf golangci-lint-release/golangci-lint-*-linux-amd64.tar.gz
+            mv golangci-lint-*-linux-amd64/golangci-lint builddir/golangci-lint
   - put: pcfops-image
     params:
       build: builddir
