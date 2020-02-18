@@ -199,6 +199,7 @@ jobs:
       - name: certstrap-github-release
       - name: kubectl-s3-release
       - name: yaml2json-github-release
+      - name: golangci-lint-release
       outputs:
       - name: builddir
       image_resource:
