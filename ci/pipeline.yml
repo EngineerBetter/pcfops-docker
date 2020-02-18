@@ -228,7 +228,7 @@ jobs:
   - put: pcfops-image
     params:
       build: builddir
-      tag: pcfops-docker-tag/version
+      tag_file: pcfops-docker-tag/version
       tag_as_latest: true
   - put: pcfops-github
     params:
