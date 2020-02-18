@@ -170,6 +170,10 @@ jobs:
       trigger: true
       params:
         globs: [certstrap-*-linux-amd64]
+    - get: golangci-lint-release
+      trigger: true
+      params:
+        globs: [golangci-lint-*-linux-amd64.tar.gz]
     - get: kubectl-s3-release
       trigger: true
       passed: [get-kubectl]
@@ -220,6 +224,7 @@ jobs:
             tar -C builddir -xzf credhub-cli-github-release/credhub-linux-*.tgz
             cp kubectl-s3-release/kubectl builddir/kubectl
             cp yaml2json-github-release/yaml2json-linux-amd64 builddir/yaml2json
+            tar -C builddir -xzf golangci-lint-release/golangci-lint-*-linux-amd64.tar.gz
   - put: pcfops-image
     params:
       build: builddir
@@ -399,4 +404,11 @@ resources:
   source:
     owner: wakeful
     repository: yaml2json
+    access_token: ((github_access_token))
+
+- name: golangci-lint-release
+  type: github-release
+  source:
+    owner: golangci
+    repository: golangci-lint
     access_token: ((github_access_token))
