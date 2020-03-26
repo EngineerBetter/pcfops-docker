@@ -179,6 +179,10 @@ jobs:
       passed: [get-kubectl]
     - get: yaml2json-github-release
       trigger: true
+    - get: bbr-release
+      trigger: true
+      params:
+        globs: [bbr-*-linux-amd64]
   # Copy dependencies
   - task: copy
     config:
@@ -200,6 +204,7 @@ jobs:
       - name: kubectl-s3-release
       - name: yaml2json-github-release
       - name: golangci-lint-release
+      - name: bbr-release
       outputs:
       - name: builddir
       image_resource:
@@ -227,6 +232,7 @@ jobs:
             cp yaml2json-github-release/yaml2json-linux-amd64 builddir/yaml2json
             tar -xzf golangci-lint-release/golangci-lint-*-linux-amd64.tar.gz
             mv golangci-lint-*-linux-amd64/golangci-lint builddir/golangci-lint
+            cp bbr-release/bbr-*-linux-amd64 builddir/bbr
   - put: pcfops-image
     params:
       build: builddir
@@ -413,4 +419,11 @@ resources:
   source:
     owner: golangci
     repository: golangci-lint
+    access_token: ((github_access_token))
+
+- name: bbr-release
+  type: github-release
+  source:
+    owner: cloudfoundry-incubator
+    repository: bosh-backup-and-restore
     access_token: ((github_access_token))

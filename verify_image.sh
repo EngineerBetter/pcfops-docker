@@ -28,6 +28,7 @@ command -v \
   yaml-patch \
   yaml2json \
   yml2env \
-  yq
+  yq \
+  bbr
 
 echo "GOPATH is $GOPATH"
