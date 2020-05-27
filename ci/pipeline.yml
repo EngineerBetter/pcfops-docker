@@ -329,7 +329,7 @@ resources:
   type: s3
   source:
     bucket: bosh-cli-artifacts
-    regexp: 'bosh-cli-(2\.\d+(\.\d+)?)-linux-amd64'
+    regexp: 'bosh-cli-(6\.\d+(\.\d+)?)-linux-amd64'
 
 - name: bbl-github-release
   type: github-release
