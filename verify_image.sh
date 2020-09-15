@@ -16,6 +16,7 @@ command -v \
   gometalinter \
   gpg \
   jq \
+  kapp \
   om \
   parallel \
   python \
