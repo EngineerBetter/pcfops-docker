@@ -30,6 +30,7 @@ command -v \
   yaml2json \
   yml2env \
   yq \
-  bbr
+  bbr \
+  ytt
 
 echo "GOPATH is $GOPATH"
