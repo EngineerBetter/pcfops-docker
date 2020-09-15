@@ -183,6 +183,10 @@ jobs:
       trigger: true
       params:
         globs: [bbr-*-linux-amd64]
+    - get: kapp-github-release
+      trigger: true
+      params:
+        globs: [kapp-linux-amd64]
   # Copy dependencies
   - task: copy
     config:
@@ -205,6 +209,7 @@ jobs:
       - name: yaml2json-github-release
       - name: golangci-lint-release
       - name: bbr-release
+      - name: kapp-github-release
       outputs:
       - name: builddir
       image_resource:
@@ -233,6 +238,7 @@ jobs:
             tar -xzf golangci-lint-release/golangci-lint-*-linux-amd64.tar.gz
             mv golangci-lint-*-linux-amd64/golangci-lint builddir/golangci-lint
             cp bbr-release/bbr-*-linux-amd64 builddir/bbr
+            cp kapp-github-release/kapp-linux-amd64 builddir/kapp
   - put: pcfops-image
     params:
       build: builddir
@@ -345,6 +351,13 @@ resources:
     repository: yq
     access_token: ((github_access_token)) # Avoids rate limits
 
+- name: kapp-github-release
+  type: github-release
+  source:
+    owner: k14s
+    repository: kapp
+    access_token: ((github_access_token)) # Avoids rate limits
+
 - name: golang-s3-release
   type: s3
   source:
@@ -362,6 +375,7 @@ resources:
   source:
     uri: https://github.com/aws/aws-cli.git
     tag_filter: 1.*.*
+
 - name: aws-cli-s3-release
   type: s3
   source:
