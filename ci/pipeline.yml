@@ -1,5 +1,13 @@
 ---
 jobs:
+- name: set-pipeline
+  serial: true
+  plan:
+  - get: pcfops-github
+    trigger: true
+  - set_pipeline: self
+    file: pcfops-github/ci/pipeline.yml
+
 - name: get-kubectl
   public: true
   serial: true
@@ -123,6 +131,7 @@ jobs:
     # Download Dockerfile
     - get: pcfops-github
       trigger: true
+      passed: [set-pipeline]
     # Trigger on base image updates
     - get: base-image
       trigger: true
