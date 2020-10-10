@@ -251,6 +251,7 @@ jobs:
             cp yaml2json-github-release/yaml2json-linux-amd64 builddir/yaml2json
             tar -xzf golangci-lint-release/golangci-lint-*-linux-amd64.tar.gz
             mv golangci-lint-*-linux-amd64/golangci-lint builddir/golangci-lint
+            mv bbr-release/bbr-s3-config-validator*-linux-amd64 builddir/bbr-s3-config-validator
             cp bbr-release/bbr-*-linux-amd64 builddir/bbr
             cp kapp-github-release/kapp-linux-amd64 builddir/kapp
             cp ytt-github-release/ytt-linux-amd64 builddir/ytt
