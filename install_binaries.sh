@@ -6,5 +6,10 @@ for name in "${names[@]}"
 do
   chmod +x /usr/bin/$name
   sync # docker bug requires this
-  $name --version
+
+  # Helm is special. Very special.
+  if [ "$name" != "helm" ]
+  then
+    $name --version
+  fi
 done
