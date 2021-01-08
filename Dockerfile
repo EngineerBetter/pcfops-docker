@@ -3,11 +3,6 @@ FROM cloudfoundry/cflinuxfs3
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
-# Copy in binaries and make sure they are executable
-COPY terraform cf jq om fly bosh bbl yq credhub certstrap helm yaml2json golangci-lint bbr kapp ytt /usr/bin/
-COPY install_binaries.sh .
-RUN ./install_binaries.sh && rm install_binaries.sh
-
 # Copy in GO and AWS source files
 COPY go.tar.gz awscli-bundle.zip ./
 
@@ -15,6 +10,11 @@ COPY go.tar.gz awscli-bundle.zip ./
 RUN tar -C /usr/local -xzf go.tar.gz \
   && rm go.tar.gz \
   && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
+
+# Copy in binaries and make sure they are executable
+COPY terraform cf jq om fly bosh bbl yq credhub certstrap helm yaml2json golangci-lint bbr kapp ytt /usr/bin/
+COPY install_binaries.sh .
+RUN ./install_binaries.sh && rm install_binaries.sh
 
 # Configure sources list so that apt-get can find the gcp SDK
 RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"  \
