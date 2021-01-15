@@ -5,6 +5,7 @@ set -eux
 command -v \
   aws \
   bbl \
+  bbr \
   bosh \
   certstrap \
   cf \
@@ -17,6 +18,7 @@ command -v \
   gpg \
   jq \
   kapp \
+  kpt \
   om \
   parallel \
   python \
@@ -30,7 +32,6 @@ command -v \
   yaml2json \
   yml2env \
   yq \
-  bbr \
   ytt
 
 echo "GOPATH is $GOPATH"

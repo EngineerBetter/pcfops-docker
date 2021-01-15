@@ -49,6 +49,7 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
   gopkg.in/alecthomas/gometalinter.v2 \
   github.com/krishicks/yaml-patch/cmd/yaml-patch \
   github.com/EngineerBetter/yml2env \
+  github.com/GoogleContainerTools/kpt \
   gopkg.in/EngineerBetter/stopover.v2 \
   gopkg.in/EngineerBetter/stopover.v1 \
   github.com/santhosh-tekuri/jsonschema/cmd/jv \
