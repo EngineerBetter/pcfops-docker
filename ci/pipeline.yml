@@ -229,6 +229,10 @@ jobs:
       trigger: true
       params:
         globs: [kapp-linux-amd64]
+    - get: kbld-github-release
+      trigger: true
+      params:
+        globs: [kbld-linux-amd64]
     - get: ytt-github-release
       trigger: true
       params:
@@ -257,6 +261,7 @@ jobs:
       - name: golangci-lint-release
       - name: bbr-release
       - name: kapp-github-release
+      - name: kbld-github-release
       - name: ytt-github-release
       outputs:
       - name: builddir
@@ -289,6 +294,7 @@ jobs:
             mv bbr-release/bbr-s3-config-validator*-linux-amd64 builddir/bbr-s3-config-validator
             cp bbr-release/bbr-*-linux-amd64 builddir/bbr
             cp kapp-github-release/kapp-linux-amd64 builddir/kapp
+            cp kbld-github-release/kbld-linux-amd64 builddir/kbld
             cp ytt-github-release/ytt-linux-amd64 builddir/ytt
   - put: pcfops-image
     params:
@@ -405,15 +411,22 @@ resources:
 - name: kapp-github-release
   type: github-release
   source:
-    owner: k14s
-    repository: kapp
+    owner: vmware-tanzu
+    repository: carvel-kapp
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: kbld-github-release
+  type: github-release
+  source:
+    owner: vmware-tanzu
+    repository: carvel-kbld
     access_token: ((github_access_token)) # Avoids rate limits
 
 - name: ytt-github-release
   type: github-release
   source:
-    owner: k14s
-    repository: ytt
+    owner: vmware-tanzu
+    repository: carvel-ytt
     access_token: ((github_access_token)) # Avoids rate limits
 
 - name: golang-s3-release
