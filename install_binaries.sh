@@ -7,9 +7,11 @@ do
   chmod +x /usr/bin/$name
   sync # docker bug requires this
 
-  # Helm is special. Very special.
-  if [ "$name" != "helm" ]
+  # shellcheck disable=SC2076
+  if [[ "$name" =~ "helm|kf" ]]
   then
+    $name version
+  else
     $name --version
   fi
 done
