@@ -1,4 +1,223 @@
 ---
+resources:
+- name: pcfops-docker-tag
+  type: semver
+  source:
+    driver: s3
+    key: docker-tag
+    bucket: pcf-docker-pipeline
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: eu-west-1
+
+- name: pcfops-github
+  type: git
+  source:
+    uri: git@github.com:EngineerBetter/pcfops-docker.git
+    branch: master
+    private_key: ((github_private_key))
+
+- name: pcfops-image
+  type: docker-image
+  source:
+    username: ((dockerhub_user))
+    password: ((dockerhub_password))
+    repository: engineerbetter/pcf-ops
+
+- name: terraform-github-release
+  type: github-release
+  source:
+    owner: hashicorp
+    repository: terraform
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: terraform-s3-release
+  type: s3
+  source:
+    versioned_file: terraform/terraform
+    bucket: pcf-docker-pipeline
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: eu-west-1
+
+- name: cf-cli-github-release
+  type: github-release
+  source:
+    owner: cloudfoundry
+    repository: cli
+    access_token: ((github_access_token)) # Avoids rate limits
+    tag_filter: v?([^v].*)$
+
+- name: cf-cli-s3-release
+  type: s3
+  source:
+    versioned_file: cf/cf
+    bucket: pcf-docker-pipeline
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: eu-west-1
+
+- name: jq-github-release
+  type: github-release
+  source:
+    owner: stedolan
+    repository: jq
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: om-github-release
+  type: github-release
+  source:
+    owner: pivotal-cf
+    repository: om
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: concourse-github-release
+  type: github-release
+  source:
+    owner: concourse
+    repository: concourse
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: bosh-s3-release
+  type: s3
+  source:
+    bucket: bosh-cli-artifacts
+    regexp: 'bosh-cli-(6\.\d+(\.\d+)?)-linux-amd64'
+
+- name: bbl-github-release
+  type: github-release
+  source:
+    owner: cloudfoundry
+    repository: bosh-bootloader
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: yq-github-release
+  type: github-release
+  source:
+    owner: mikefarah
+    repository: yq
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: kapp-github-release
+  type: github-release
+  source:
+    owner: vmware-tanzu
+    repository: carvel-kapp
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: kbld-github-release
+  type: github-release
+  source:
+    owner: vmware-tanzu
+    repository: carvel-kbld
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: ytt-github-release
+  type: github-release
+  source:
+    owner: vmware-tanzu
+    repository: carvel-ytt
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: golang-s3-release
+  type: s3
+  source:
+    endpoint: storage.googleapis.com
+    bucket: golang
+    regexp: 'go(1\.\d+(\.\d+)?)\.linux-amd64\.tar.gz'
+
+- name: base-image
+  type: docker-image
+  source:
+    repository: cloudfoundry/cflinuxfs3
+
+- name: aws-cli-git
+  type: git
+  source:
+    uri: https://github.com/aws/aws-cli.git
+    tag_filter: 1.*.*
+
+- name: aws-cli-s3-release
+  type: s3
+  source:
+    versioned_file: aws-cli/awscli-bundle.zip
+    bucket: pcf-docker-pipeline
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: eu-west-1
+
+- name: cf-uaac-github-release
+  type: github-release
+  source:
+    owner: cloudfoundry
+    repository: cf-uaac
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: credhub-cli-github-release
+  type: github-release
+  source:
+    owner: cloudfoundry-incubator
+    repository: credhub-cli
+    access_token: ((github_access_token)) # Avoids rate limits
+
+- name: certstrap-github-release
+  type: github-release
+  source:
+    owner: square
+    repository: certstrap
+    access_token: ((github_access_token))
+
+- name: kubernetes-github-release
+  type: github-release
+  source:
+    owner: kubernetes
+    repository: kubernetes
+    access_token: ((github_access_token))
+- name: kubectl-s3-release
+  type: s3
+  source:
+    versioned_file: kubectl/kubectl
+    bucket: pcf-docker-pipeline
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: eu-west-1
+
+- name: yaml2json-github-release
+  type: github-release
+  source:
+    owner: wakeful
+    repository: yaml2json
+    access_token: ((github_access_token))
+
+- name: golangci-lint-release
+  type: github-release
+  source:
+    owner: golangci
+    repository: golangci-lint
+    access_token: ((github_access_token))
+
+- name: bbr-release
+  type: github-release
+  source:
+    owner: cloudfoundry-incubator
+    repository: bosh-backup-and-restore
+    access_token: ((github_access_token))
+
+- name: helm-github-release
+  type: github-release
+  source:
+    owner: helm
+    repository: helm
+    access_token: ((github_access_token))
+- name: helm-s3-release
+  type: s3
+  source:
+    versioned_file: helm/helm
+    bucket: pcf-docker-pipeline
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: eu-west-1
+
 jobs:
 - name: set-pipeline
   serial: true
@@ -308,222 +527,3 @@ jobs:
       only_tag: true
   - put: pcfops-docker-tag
     params: {file: pcfops-docker-tag/version}
-
-resources:
-- name: pcfops-docker-tag
-  type: semver
-  source:
-    driver: s3
-    key: docker-tag
-    bucket: pcf-docker-pipeline
-    access_key_id: ((aws_access_key_id))
-    secret_access_key: ((aws_secret_access_key))
-    region_name: eu-west-1
-
-- name: pcfops-github
-  type: git
-  source:
-    uri: git@github.com:EngineerBetter/pcfops-docker.git
-    branch: master
-    private_key: ((github_private_key))
-
-- name: pcfops-image
-  type: docker-image
-  source:
-    username: ((dockerhub_user))
-    password: ((dockerhub_password))
-    repository: engineerbetter/pcf-ops
-
-- name: terraform-github-release
-  type: github-release
-  source:
-    owner: hashicorp
-    repository: terraform
-    access_token: ((github_access_token)) # Avoids rate limits
-
-- name: terraform-s3-release
-  type: s3
-  source:
-    versioned_file: terraform/terraform
-    bucket: pcf-docker-pipeline
-    access_key_id: ((aws_access_key_id))
-    secret_access_key: ((aws_secret_access_key))
-    region_name: eu-west-1
-
-- name: cf-cli-github-release
-  type: github-release
-  source:
-    owner: cloudfoundry
-    repository: cli
-    access_token: ((github_access_token)) # Avoids rate limits
-    tag_filter: v?([^v].*)$
-
-- name: cf-cli-s3-release
-  type: s3
-  source:
-    versioned_file: cf/cf
-    bucket: pcf-docker-pipeline
-    access_key_id: ((aws_access_key_id))
-    secret_access_key: ((aws_secret_access_key))
-    region_name: eu-west-1
-
-- name: jq-github-release
-  type: github-release
-  source:
-    owner: stedolan
-    repository: jq
-    access_token: ((github_access_token)) # Avoids rate limits
-
-- name: om-github-release
-  type: github-release
-  source:
-    owner: pivotal-cf
-    repository: om
-    access_token: ((github_access_token)) # Avoids rate limits
-
-- name: concourse-github-release
-  type: github-release
-  source:
-    owner: concourse
-    repository: concourse
-    access_token: ((github_access_token)) # Avoids rate limits
-
-- name: bosh-s3-release
-  type: s3
-  source:
-    bucket: bosh-cli-artifacts
-    regexp: 'bosh-cli-(6\.\d+(\.\d+)?)-linux-amd64'
-
-- name: bbl-github-release
-  type: github-release
-  source:
-    owner: cloudfoundry
-    repository: bosh-bootloader
-    access_token: ((github_access_token)) # Avoids rate limits
-
-- name: yq-github-release
-  type: github-release
-  source:
-    owner: mikefarah
-    repository: yq
-    access_token: ((github_access_token)) # Avoids rate limits
-
-- name: kapp-github-release
-  type: github-release
-  source:
-    owner: vmware-tanzu
-    repository: carvel-kapp
-    access_token: ((github_access_token)) # Avoids rate limits
-
-- name: kbld-github-release
-  type: github-release
-  source:
-    owner: vmware-tanzu
-    repository: carvel-kbld
-    access_token: ((github_access_token)) # Avoids rate limits
-
-- name: ytt-github-release
-  type: github-release
-  source:
-    owner: vmware-tanzu
-    repository: carvel-ytt
-    access_token: ((github_access_token)) # Avoids rate limits
-
-- name: golang-s3-release
-  type: s3
-  source:
-    endpoint: storage.googleapis.com
-    bucket: golang
-    regexp: 'go(1\.\d+(\.\d+)?)\.linux-amd64\.tar.gz'
-
-- name: base-image
-  type: docker-image
-  source:
-    repository: cloudfoundry/cflinuxfs3
-
-- name: aws-cli-git
-  type: git
-  source:
-    uri: https://github.com/aws/aws-cli.git
-    tag_filter: 1.*.*
-
-- name: aws-cli-s3-release
-  type: s3
-  source:
-    versioned_file: aws-cli/awscli-bundle.zip
-    bucket: pcf-docker-pipeline
-    access_key_id: ((aws_access_key_id))
-    secret_access_key: ((aws_secret_access_key))
-    region_name: eu-west-1
-
-- name: cf-uaac-github-release
-  type: github-release
-  source:
-    owner: cloudfoundry
-    repository: cf-uaac
-    access_token: ((github_access_token)) # Avoids rate limits
-
-- name: credhub-cli-github-release
-  type: github-release
-  source:
-    owner: cloudfoundry-incubator
-    repository: credhub-cli
-    access_token: ((github_access_token)) # Avoids rate limits
-
-- name: certstrap-github-release
-  type: github-release
-  source:
-    owner: square
-    repository: certstrap
-    access_token: ((github_access_token))
-
-- name: kubernetes-github-release
-  type: github-release
-  source:
-    owner: kubernetes
-    repository: kubernetes
-    access_token: ((github_access_token))
-- name: kubectl-s3-release
-  type: s3
-  source:
-    versioned_file: kubectl/kubectl
-    bucket: pcf-docker-pipeline
-    access_key_id: ((aws_access_key_id))
-    secret_access_key: ((aws_secret_access_key))
-    region_name: eu-west-1
-
-- name: yaml2json-github-release
-  type: github-release
-  source:
-    owner: wakeful
-    repository: yaml2json
-    access_token: ((github_access_token))
-
-- name: golangci-lint-release
-  type: github-release
-  source:
-    owner: golangci
-    repository: golangci-lint
-    access_token: ((github_access_token))
-
-- name: bbr-release
-  type: github-release
-  source:
-    owner: cloudfoundry-incubator
-    repository: bosh-backup-and-restore
-    access_token: ((github_access_token))
-
-- name: helm-github-release
-  type: github-release
-  source:
-    owner: helm
-    repository: helm
-    access_token: ((github_access_token))
-- name: helm-s3-release
-  type: s3
-  source:
-    versioned_file: helm/helm
-    bucket: pcf-docker-pipeline
-    access_key_id: ((aws_access_key_id))
-    secret_access_key: ((aws_secret_access_key))
-    region_name: eu-west-1
