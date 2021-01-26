@@ -18,7 +18,6 @@ command -v \
   gpg \
   jq \
   kapp \
-  kf \
   kpt \
   om \
   parallel \
@@ -34,5 +33,7 @@ command -v \
   yml2env \
   yq \
   ytt
+
+kf version
 
 echo "GOPATH is $GOPATH"
