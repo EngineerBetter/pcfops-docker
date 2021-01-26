@@ -18,6 +18,7 @@ command -v \
   gpg \
   jq \
   kapp \
+  kf \
   kpt \
   om \
   parallel \

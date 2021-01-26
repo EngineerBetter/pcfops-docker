@@ -126,6 +126,13 @@ resources:
     bucket: golang
     regexp: 'go(1\.\d+(\.\d+)?)\.linux-amd64\.tar.gz'
 
+- name: kf-s3-release
+  type: s3
+  source:
+    endpoint: storage.googleapis.com
+    bucket: kf-releases
+    regexp: 'v(1\.\d+(\.\d+)?)/kf-linux'
+
 - name: base-image
   type: docker-image
   source:
@@ -415,6 +422,8 @@ jobs:
         globs: [yq_linux_amd64]
     - get: golang-s3-release
       trigger: true
+    - get: kf-s3-release
+      trigger: true
     - get: aws-cli-s3-release
       trigger: true
       passed: [get-aws-cli]
@@ -471,6 +480,7 @@ jobs:
       - name: bbl-github-release
       - name: yq-github-release
       - name: golang-s3-release
+      - name: kf-s3-release
       - name: aws-cli-s3-release
       - name: credhub-cli-github-release
       - name: certstrap-github-release
@@ -503,6 +513,7 @@ jobs:
             cp yq-github-release/yq_linux_amd64 builddir/yq
             cp certstrap-github-release/certstrap-*-linux-amd64 builddir/certstrap
             cp golang-s3-release/go*.linux-amd64.tar.gz builddir/go.tar.gz
+            cp kf-s3-release/kf-linux builddir/kf
             cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
             tar -C builddir -xzf credhub-cli-github-release/credhub-linux-*.tgz
             cp kubectl-s3-release/kubectl builddir/kubectl
