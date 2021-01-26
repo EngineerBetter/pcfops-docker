@@ -131,7 +131,7 @@ resources:
   source:
     endpoint: storage.googleapis.com
     bucket: kf-releases
-    regexp: 'v(1\.\d+(\.\d+)?)/kf-linux'
+    regexp: 'v(2\.\d+(\.\d+)?)/kf-linux'
 
 - name: base-image
   type: docker-image
