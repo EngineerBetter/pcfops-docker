@@ -7,8 +7,7 @@ do
   chmod +x /usr/bin/$name
   sync # docker bug requires this
 
-  # shellcheck disable=SC2076
-  if [[ "$name" =~ "helm|kf" ]]
+  if [[ "$name" =~ helm|kf ]]
   then
     $name version
   else
