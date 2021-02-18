@@ -2,6 +2,7 @@ FROM cloudfoundry/cflinuxfs3
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+ARG GO111MODULE=auto
 
 # Copy in GO and AWS source files
 COPY go.tar.gz awscli-bundle.zip ./
@@ -44,7 +45,7 @@ RUN unzip awscli-bundle.zip \
   && rm -r awscli-bundle \
   && aws --version
 
-RUN GO111MODULE=auto go get github.com/onsi/ginkgo/ginkgo \
+RUN go get github.com/onsi/ginkgo/ginkgo \
   github.com/onsi/gomega \
   gopkg.in/alecthomas/gometalinter.v2 \
   github.com/krishicks/yaml-patch/cmd/yaml-patch \
