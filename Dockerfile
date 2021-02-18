@@ -49,9 +49,12 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
   gopkg.in/alecthomas/gometalinter.v2 \
   github.com/krishicks/yaml-patch/cmd/yaml-patch \
   github.com/EngineerBetter/yml2env \
-  gopkg.in/EngineerBetter/stopover.v2 \
+  github.com/santhosh-tekuri/jsonschema/cmd/jv
+
+# Stopover doesn't have go modules and it's dependencies don't seem
+# to work with go mod tidy
+RUN GO111MODULE=auto go get gopkg.in/EngineerBetter/stopover.v2 \
   gopkg.in/EngineerBetter/stopover.v1 \
-  github.com/santhosh-tekuri/jsonschema/cmd/jv \
   && mv /go/bin/stopover.v1 /go/bin/stopover
 
 # Install gometalinter
