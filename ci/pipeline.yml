@@ -30,6 +30,7 @@ resources:
     owner: hashicorp
     repository: terraform
     access_token: ((github_access_token)) # Avoids rate limits
+    semver_constraint: ~0.12.x
 
 - name: terraform-s3-release
   type: s3
