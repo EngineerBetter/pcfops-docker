@@ -22,6 +22,7 @@ command -v \
   kpt \
   om \
   parallel \
+  prolific \
   python \
   ruby \
   shellcheck \
