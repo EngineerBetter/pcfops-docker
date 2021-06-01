@@ -48,6 +48,7 @@ RUN unzip awscli-bundle.zip \
 RUN go get github.com/onsi/ginkgo/ginkgo \
   github.com/onsi/gomega \
   gopkg.in/onsi/prolific.v2 \
+  && mv /go/bin/prolific.v2 /go/bin/prolific \
   gopkg.in/alecthomas/gometalinter.v2 \
   github.com/krishicks/yaml-patch/cmd/yaml-patch \
   github.com/EngineerBetter/yml2env \
