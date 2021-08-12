@@ -41,7 +41,7 @@ RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/pos
 # Install AWS CLI
 RUN unzip awscli-bundle.zip \
   && rm awscli-bundle.zip \
-  && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws \
+  && /usr/bin/python3 ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws \
   && rm -r awscli-bundle \
   && aws --version
 
