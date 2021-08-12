@@ -532,6 +532,8 @@ jobs:
       build: builddir
       tag_file: pcfops-docker-tag/version
       tag_as_latest: true
+    get_params: {skip_download: true}
+
   - put: pcfops-github
     params:
       repository: pcfops-github
