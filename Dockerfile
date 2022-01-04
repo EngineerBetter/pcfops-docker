@@ -49,7 +49,7 @@ RUN go get github.com/onsi/ginkgo/ginkgo \
   github.com/onsi/gomega \
   gopkg.in/onsi/prolific.v2 \
   gopkg.in/alecthomas/gometalinter.v2 \
-  github.com/pivotal-cf/yaml-patch/cmd/yaml-patch \
+  github.com/EngineerBetter/yaml-patch/cmd/yaml-patch \
   github.com/EngineerBetter/yml2env \
   github.com/santhosh-tekuri/jsonschema/cmd/jv \
   gopkg.in/EngineerBetter/stopover.v2 \
