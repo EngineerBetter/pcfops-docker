@@ -125,7 +125,7 @@ resources:
   source:
     endpoint: storage.googleapis.com
     bucket: golang
-    regexp: 'go(1\.\d+(\.\d+)?)\.linux-amd64\.tar.gz'
+    regexp: 'go(1\.\d+(\.\d+)?)\.linux-amd64\.tar.gz$'
 
 - name: kf-s3-release
   type: s3
