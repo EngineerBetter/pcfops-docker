@@ -464,6 +464,7 @@ jobs:
         globs: [yq_linux_amd64]
     - get: golang-s3-release
       trigger: true
+      passed: [get-golang]
     - get: kf-s3-release
       trigger: true
     - get: aws-cli-s3-release
