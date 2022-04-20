@@ -125,6 +125,7 @@ resources:
   source:
     owner: golang
     repository: go
+    tag: go1.17.9
     access_token: ((github_access_token))
 - name: golang-s3-release
   type: s3
