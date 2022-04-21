@@ -1,5 +1,6 @@
 ---
 resources:
+
 - name: pcfops-docker-tag
   type: semver
   source:
@@ -120,13 +121,6 @@ resources:
     repository: carvel-ytt
     access_token: ((github_access_token)) # Avoids rate limits
 
-- name: golang-github-release
-  type: github-release
-  source:
-    owner: golang
-    repository: go
-    tag: go1.17.9
-    access_token: ((github_access_token))
 - name: golang-s3-release
   type: s3
   source:
@@ -392,32 +386,33 @@ jobs:
   public: true
   serial: true
   plan:
-  - get: golang-github-release
-    trigger: true
   - task: download
     config:
       platform: linux
-      inputs:
-      - name: golang-github-release
       outputs:
       - name: golang-tar
       image_resource:
         type: docker-image
-        source: {repository: busybox}
+        source: {repository: ubuntu}
       run:
-        path: ash
+        path: bash
         args:
         - -xc
         - |
           set -euo pipefail
-          version=$(cat golang-github-release/version)
-          url="https://go.dev/dl/go${version}.linux-amd64.tar.gz"
-          wget -O go-linux-amd64.tar.gz "$url"
-          cp go-linux-amd64.tar.gz golang-tar/
+          GOLANG_MINOR="go1.17"
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get -q -y install curl jq wget
+          GO_FILENAME=$(curl -s 'https://go.dev/dl/?mode=json' | \
+          jq --arg GOLANG_MINOR "$GOLANG_MINOR" \
+          '.[] | recurse(.files[]?) | select( .os == "linux" and .arch =="amd64") | select(.version|startswith($GOLANG_MINOR)).filename ' \
+          | tr -d '"')
+          URL="https://go.dev/dl/$GO_FILENAME"
+          wget -q -O golang-tar/go-linux-amd64.tar.gz "$URL"
+
   - put: golang-s3-release
-    params: {file: golang/go-linux-amd64.tar.gz}
-
-
+    params: {file: golang-tar/go-linux-amd64.tar.gz}
 
 - name: build-pcfops-image
   public: true
@@ -569,6 +564,7 @@ jobs:
             cp kapp-github-release/kapp-linux-amd64 builddir/kapp
             cp kbld-github-release/kbld-linux-amd64 builddir/kbld
             cp ytt-github-release/ytt-linux-amd64 builddir/ytt
+
   - put: pcfops-image
     params:
       build: builddir
