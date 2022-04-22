@@ -400,7 +400,7 @@ jobs:
         - -xc
         - |
           set -euo pipefail
-          GOLANG_MINOR="go1.17"
+          GOLANG_MINOR="go1.18"
           export DEBIAN_FRONTEND=noninteractive
           apt-get update
           apt-get -q -y install curl jq wget
