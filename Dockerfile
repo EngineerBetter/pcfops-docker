@@ -2,6 +2,7 @@ FROM cloudfoundry/cflinuxfs3
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+ARG GO111MODULE=auto
 
 # Copy in GO and AWS source files
 COPY go.tar.gz awscli-bundle.zip ./
@@ -44,15 +45,15 @@ RUN unzip awscli-bundle.zip \
   && rm -r awscli-bundle \
   && aws --version
 
-RUN go install github.com/onsi/ginkgo@latest \
-  github.com/onsi/gomega@latest \
-  gopkg.in/onsi/prolific.v2@latest \
-  gopkg.in/alecthomas/gometalinter.v2@latest \
-  github.com/EngineerBetter/yaml-patch/cmd/yaml-patch@latest \
-  github.com/EngineerBetter/yml2env@latest \
-  github.com/santhosh-tekuri/jsonschema/cmd/jv@latest \
-  gopkg.in/EngineerBetter/stopover.v2@latest \
-  gopkg.in/EngineerBetter/stopover.v1@latest \
+RUN go get github.com/onsi/ginkgo \
+  github.com/onsi/gomega \
+  gopkg.in/onsi/prolific.v2 \
+  gopkg.in/alecthomas/gometalinter.v2 \
+  github.com/EngineerBetter/yaml-patch/cmd/yaml-patch \
+  github.com/EngineerBetter/yml2env \
+  github.com/santhosh-tekuri/jsonschema/cmd/jv \
+  gopkg.in/EngineerBetter/stopover.v2 \
+  gopkg.in/EngineerBetter/stopover.v1 \
   && mv /go/bin/prolific.v2 /go/bin/prolific \
   && mv /go/bin/stopover.v1 /go/bin/stopover
 
