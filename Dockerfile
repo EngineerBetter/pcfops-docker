@@ -53,8 +53,8 @@ RUN go install github.com/onsi/ginkgo@latest \
   github.com/santhosh-tekuri/jsonschema/cmd/jv@latest \
   gopkg.in/EngineerBetter/stopover.v2@latest \
   gopkg.in/EngineerBetter/stopover.v1@latest \
-  && mv /go/bin/prolific.v2@latest /go/bin/prolific@latest \
-  && mv /go/bin/stopover.v1@latest /go/bin/stopover@latest
+  && mv /go/bin/prolific.v2 /go/bin/prolific \
+  && mv /go/bin/stopover.v1 /go/bin/stopover
 
 # Install gometalinter
 RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
