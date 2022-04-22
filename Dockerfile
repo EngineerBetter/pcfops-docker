@@ -44,17 +44,17 @@ RUN unzip awscli-bundle.zip \
   && rm -r awscli-bundle \
   && aws --version
 
-RUN go install github.com/onsi/ginkgo \
-  github.com/onsi/gomega \
-  gopkg.in/onsi/prolific.v2 \
-  gopkg.in/alecthomas/gometalinter.v2 \
-  github.com/EngineerBetter/yaml-patch/cmd/yaml-patch \
-  github.com/EngineerBetter/yml2env \
-  github.com/santhosh-tekuri/jsonschema/cmd/jv \
-  gopkg.in/EngineerBetter/stopover.v2 \
-  gopkg.in/EngineerBetter/stopover.v1 \
-  && mv /go/bin/prolific.v2 /go/bin/prolific \
-  && mv /go/bin/stopover.v1 /go/bin/stopover
+RUN go install github.com/onsi/ginkgo@latest \
+  github.com/onsi/gomega@latest \
+  gopkg.in/onsi/prolific.v2@latest \
+  gopkg.in/alecthomas/gometalinter.v2@latest \
+  github.com/EngineerBetter/yaml-patch/cmd/yaml-patch@latest \
+  github.com/EngineerBetter/yml2env@latest \
+  github.com/santhosh-tekuri/jsonschema/cmd/jv@latest \
+  gopkg.in/EngineerBetter/stopover.v2@latest \
+  gopkg.in/EngineerBetter/stopover.v1@latest \
+  && mv /go/bin/prolific.v2@latest /go/bin/prolific@latest \
+  && mv /go/bin/stopover.v1@latest /go/bin/stopover@latest
 
 # Install gometalinter
 RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
