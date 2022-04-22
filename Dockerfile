@@ -45,7 +45,7 @@ RUN unzip awscli-bundle.zip \
   && rm -r awscli-bundle \
   && aws --version
 
-RUN go get github.com/onsi/ginkgo \
+RUN go install github.com/onsi/ginkgo \
   github.com/onsi/gomega \
   gopkg.in/onsi/prolific.v2 \
   gopkg.in/alecthomas/gometalinter.v2 \
@@ -62,7 +62,7 @@ RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
   gometalinter --install
 
 # install kpt
-RUN GO111MODULE=on go get -v github.com/GoogleContainerTools/kpt
+RUN GO111MODULE=on go install -v github.com/GoogleContainerTools/kpt
 
 # Install uaac
 RUN gem install --no-document --no-update-sources --verbose cf-uaac \
