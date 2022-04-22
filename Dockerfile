@@ -62,7 +62,7 @@ RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
   gometalinter --install
 
 # install kpt
-RUN GO111MODULE=on go install -v github.com/GoogleContainerTools/kpt
+RUN go install github.com/GoogleContainerTools/kpt@latest
 
 # Install uaac
 RUN gem install --no-document --no-update-sources --verbose cf-uaac \
