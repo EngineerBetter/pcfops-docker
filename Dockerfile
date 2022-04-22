@@ -45,7 +45,7 @@ RUN unzip awscli-bundle.zip \
   && rm -r awscli-bundle \
   && aws --version
 
-RUN go install github.com/onsi/ginkgo \
+RUN go get github.com/onsi/ginkgo \
   github.com/onsi/gomega \
   gopkg.in/onsi/prolific.v2 \
   gopkg.in/alecthomas/gometalinter.v2 \
