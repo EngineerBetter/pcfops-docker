@@ -1,5 +1,18 @@
 ---
+resource_types:
+- name: http-jq-resource
+  type: docker-image
+  source:
+    repository: qudini/concourse-http-jq-resource
+    tag: latest
+
 resources:
+- name: golang-http-jq-release
+  type: http-jq-resource
+  source:
+    base_url: https://go.dev/dl/?mode=json
+    jq_filter: .[] | recurse(.files[]?) | select( .os == "linux" and .arch =="amd64") | select(.version|startswith("go1.18")) | {go_filename:.filename}
+
 
 - name: pcfops-docker-tag
   type: semver
@@ -386,28 +399,25 @@ jobs:
   public: true
   serial: true
   plan:
+  - get: golang-http-jq-release
+    trigger: true
   - task: download
     config:
       platform: linux
+      inputs:
+      - name: golang-http-jq-release
       outputs:
       - name: golang-tar
       image_resource:
         type: docker-image
-        source: {repository: ubuntu}
+        source: {repository: badouralix/curl-jq}
       run:
-        path: bash
+        path: ash
         args:
         - -xc
         - |
           set -euo pipefail
-          GOLANG_MINOR="go1.18"
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get update
-          apt-get -q -y install curl jq wget
-          GO_FILENAME=$(curl -s 'https://go.dev/dl/?mode=json' | \
-          jq --arg GOLANG_MINOR "$GOLANG_MINOR" \
-          '.[] | recurse(.files[]?) | select( .os == "linux" and .arch =="amd64") | select(.version|startswith($GOLANG_MINOR)).filename ' \
-          | tr -d '"')
+          GO_FILENAME=$(jq -r .go_filename golang-http-jq-release/version)
           URL="https://go.dev/dl/$GO_FILENAME"
           wget -q -O golang-tar/go-linux-amd64.tar.gz "$URL"
 
