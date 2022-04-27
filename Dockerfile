@@ -5,7 +5,7 @@ ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 ARG GO111MODULE=auto
 
 # Copy in GO and AWS source files
-COPY go.tar.gz awscli-bundle.zip ./
+COPY go.tar.gz awscli-exe-linux-x86_64.zip ./
 
 # Unpack and install GO
 RUN tar -C /usr/local -xzf go.tar.gz \
@@ -39,10 +39,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/postgresql/*/bin/postgres /usr/bin/postgres
 
 # Install AWS CLI
-RUN unzip awscli-bundle.zip \
-  && rm awscli-bundle.zip \
-  && /usr/bin/python3 ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws \
-  && rm -r awscli-bundle \
+RUN unzip awscli-exe-linux-x86_64.zip \
+  && rm awscli-exe-linux-x86_64.zip \
+  && ./aws/install \
+  && rm -r aws \
   && aws --version
 
 RUN go get github.com/onsi/ginkgo \

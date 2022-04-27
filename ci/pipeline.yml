@@ -28,7 +28,7 @@ resources:
   type: git
   source:
     uri: git@github.com:EngineerBetter/pcfops-docker.git
-    branch: master
+    branch: aws-cli-upgrade
     private_key: ((github_private_key))
 
 - name: pcfops-image
@@ -159,12 +159,13 @@ resources:
   type: git
   source:
     uri: https://github.com/aws/aws-cli.git
-    tag_filter: 1.*.*
+    branch: v2
+    tag_filter: 2.*.*
 
 - name: aws-cli-s3-release
   type: s3
   source:
-    versioned_file: aws-cli/awscli-bundle.zip
+    versioned_file: aws-cli/awscli-exe-linux-x86_64.zip
     bucket: pcf-docker-pipeline
     access_key_id: ((aws_access_key_id))
     secret_access_key: ((aws_secret_access_key))
@@ -389,10 +390,10 @@ jobs:
         - -c
         - |
           set -euo pipefail
-          url="https://s3.amazonaws.com/aws-cli/awscli-bundle.zip"
-          wget -O aws-cli/awscli-bundle.zip "$url"
+          url="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+          wget -O aws-cli/awscli-exe-linux-x86_64.zip "$url"
   - put: aws-cli-s3-release
-    params: {file: aws-cli/awscli-bundle.zip}
+    params: {file: aws-cli/awscli-exe-linux-x86_64.zip}
 
 
 - name: get-golang
@@ -562,7 +563,7 @@ jobs:
             cp certstrap-github-release/certstrap-*-linux-amd64 builddir/certstrap
             cp golang-s3-release/go-linux-amd64.tar.gz builddir/go.tar.gz
             cp kf-s3-release/kf-linux builddir/kf
-            cp aws-cli-s3-release/awscli-bundle.zip builddir/awscli-bundle.zip
+            cp aws-cli-s3-release/awscli-exe-linux-x86_64.zip builddir/awscli-exe-linux-x86_64.zip
             tar -C builddir -xzf credhub-cli-github-release/credhub-linux-*.tgz
             cp kubectl-s3-release/kubectl builddir/kubectl
             cp helm-s3-release/helm builddir/helm

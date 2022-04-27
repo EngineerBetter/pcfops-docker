@@ -20,6 +20,7 @@ command -v \
   kapp \
   kf \
   kpt \
+  kubectl \
   om \
   parallel \
   prolific \
