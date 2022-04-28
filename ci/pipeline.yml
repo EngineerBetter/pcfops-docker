@@ -28,7 +28,7 @@ resources:
   type: git
   source:
     uri: git@github.com:EngineerBetter/pcfops-docker.git
-    branch: aws-cli-upgrade
+    branch: master
     private_key: ((github_private_key))
 
 - name: pcfops-image
