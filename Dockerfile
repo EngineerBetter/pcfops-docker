@@ -31,7 +31,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   gnupg2 \
   shellcheck \
   google-cloud-sdk \
-  kubectl \
   && rm -rf /var/lib/apt/lists/*
 
 # Symlinks required by postgres
