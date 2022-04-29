@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -eux
+echo "Executing $0"
 
 command -v \
   aws \
@@ -15,9 +16,12 @@ command -v \
   ginkgo \
   go \
   gometalinter \
+  golangci-lint \
   gpg \
+  helm \
   jq \
   kapp \
+  kbld \
   kf \
   kpt \
   kubectl \

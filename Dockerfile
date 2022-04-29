@@ -13,7 +13,8 @@ RUN tar -C /usr/local -xzf go.tar.gz \
   && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
 # Copy in binaries and make sure they are executable
-COPY terraform cf jq om fly bosh bbl yq credhub certstrap helm yaml2json golangci-lint bbr kapp kbld ytt kf /usr/bin/
+# CHORE: we're triplicating(!) this list also in install_binaries and verify_image (and missing out there)
+COPY terraform cf jq om fly bosh bbl yq credhub certstrap helm yaml2json golangci-lint bbr kapp kbld ytt kf kubectl /usr/bin/
 COPY install_binaries.sh .
 RUN ./install_binaries.sh && rm install_binaries.sh
 

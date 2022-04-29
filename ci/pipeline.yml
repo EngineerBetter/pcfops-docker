@@ -275,7 +275,7 @@ jobs:
         - |
           set -euo pipefail
           version=$(cat kubernetes-github-release/version)
-          url="https://dl.k8s.io/v${version}/kubernetes-client-darwin-amd64.tar.gz"
+          url="https://dl.k8s.io/v${version}/kubernetes-client-linux-amd64.tar.gz"
           wget -O kubernetes-client.tar.gz "$url"
           tar -xf kubernetes-client.tar.gz
           cp kubernetes/client/bin/kubectl kubectl/
