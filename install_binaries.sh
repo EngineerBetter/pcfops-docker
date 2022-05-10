@@ -8,7 +8,7 @@ do
   sync # docker bug requires this
   if [[ "$name" = kubectl ]]
   then
-    $name kubectl version --client=true
+    $name version --client=true
   elif [[ "$name" =~ helm|kf|bbr ]]
   then
     $name version
