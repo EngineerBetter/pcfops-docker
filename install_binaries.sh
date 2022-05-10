@@ -6,8 +6,10 @@ for name in "${names[@]}"
 do
   chmod +x /usr/bin/$name
   sync # docker bug requires this
-
-  if [[ "$name" =~ helm|kf|bbr|kubectl ]]
+  if [[ "$name" = kubectl ]]
+  then
+    $name kubectl version --client=true
+  elif [[ "$name" =~ helm|kf|bbr ]]
   then
     $name version
   else
