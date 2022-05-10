@@ -7,7 +7,7 @@ do
   chmod +x /usr/bin/$name
   sync # docker bug requires this
 
-  if [[ "$name" =~ helm|kf|bbr ]]
+  if [[ "$name" =~ helm|kf|bbr|kubectl ]]
   then
     $name version
   else
