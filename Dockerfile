@@ -38,7 +38,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/postgresql/*/bin/postgres /usr/bin/postgres
 
 # Install AWS CLI
-RUN unzip awscli-exe-linux-x86_64.zip \
+RUN unzip -q awscli-exe-linux-x86_64.zip \
   && rm awscli-exe-linux-x86_64.zip \
   && ./aws/install \
   && rm -r aws \
