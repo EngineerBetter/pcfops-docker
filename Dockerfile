@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   gnupg2 \
   shellcheck \
   google-cloud-sdk \
+  google-cloud-sdk-gke-gcloud-auth-plugin \
   && rm -rf /var/lib/apt/lists/*
 
 # Symlinks required by postgres
