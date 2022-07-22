@@ -485,7 +485,7 @@ jobs:
     - get: certstrap-github-release
       trigger: true
       params:
-        globs: [certstrap-*-linux-amd64]
+        globs: [certstrap*linux-amd64]
     - get: golangci-lint-release
       trigger: true
       params:
@@ -560,7 +560,7 @@ jobs:
             cp bosh-s3-release/bosh-cli-*-linux-amd64 builddir/bosh
             cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
             cp yq-github-release/yq_linux_amd64 builddir/yq
-            cp certstrap-github-release/certstrap-*-linux-amd64 builddir/certstrap
+            cp certstrap-github-release/certstrap*linux-amd64 builddir/certstrap
             cp golang-s3-release/go-linux-amd64.tar.gz builddir/go.tar.gz
             cp kf-s3-release/kf-linux builddir/kf
             cp aws-cli-s3-release/awscli-exe-linux-x86_64.zip builddir/awscli-exe-linux-x86_64.zip
