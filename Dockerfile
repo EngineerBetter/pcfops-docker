@@ -3,6 +3,8 @@ FROM cloudfoundry/cflinuxfs3
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 ARG GO111MODULE=auto
+ARG RUBY_VERSION=2.7.0
+
 
 # Copy in GO and AWS source files
 COPY go.tar.gz awscli-exe-linux-x86_64.zip ./
@@ -64,9 +66,26 @@ RUN mv /go/bin/gometalinter.v2 /go/bin/gometalinter && \
 # install kpt
 RUN go install github.com/GoogleContainerTools/kpt@latest
 
+# Install later ruby version
+RUN git clone https://github.com/rbenv/rbenv.git /root/.rbenv \
+  && git clone https://github.com/rbenv/ruby-build.git /root/.rbenv/plugins/ruby-build \
+  && /root/.rbenv/plugins/ruby-build/install.sh \
+  && echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh \
+  && echo 'eval "$(rbenv init -)"' >> .bashrc \
+  && echo 'eval "$(rbenv init -)"' >> $HOME/.bash_profile
+
+ENV CONFIGURE_OPTS --disable-install-doc
+ENV PATH /root/.rbenv/bin:$PATH
+
+RUN rbenv install ${RUBY_VERSION} \
+  && rbenv global ${RUBY_VERSION}
+
 # Install uaac
-RUN gem install --no-document --no-update-sources --verbose cf-uaac \
-  && rm -rf /usr/lib/ruby/gems/2.5.0/cache/
+RUN bash -l -c 'gem update --system' \
+  && bash -l -c 'gem update' \
+  && gem install --no-document --no-update-sources --verbose cf-uaac \
+  && rm -rf /usr/lib/ruby/gems/2.5.0/cache/ \
+  && rm -rf /root/.rbenv/versions/2.7.0/lib/ruby/gems/2.7.0/cache
 
 COPY verify_image.sh /tmp/verify_image.sh
 RUN /tmp/verify_image.sh && rm /tmp/verify_image.sh
