@@ -83,7 +83,7 @@ RUN rbenv install ${RUBY_VERSION} \
 # Install uaac
 RUN bash -l -c 'gem update --system' \
   && bash -l -c 'gem update' \
-  && gem install --no-document --no-update-sources --verbose cf-uaac \
+  && bash -l -c 'gem install --no-document --no-update-sources --verbose cf-uaac' \
   && rm -rf /usr/lib/ruby/gems/2.5.0/cache/ \
   && rm -rf /root/.rbenv/versions/2.7.0/lib/ruby/gems/2.7.0/cache
 
