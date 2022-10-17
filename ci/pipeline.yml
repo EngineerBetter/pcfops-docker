@@ -498,6 +498,8 @@ jobs:
       passed: [get-helm]
     - get: yaml2json-github-release
       trigger: true
+      params:
+        globs: [yaml2json_*_linux_amd64.tar.gz]
     - get: bbr-release
       trigger: true
       params:
@@ -567,7 +569,7 @@ jobs:
             tar -C builddir -xzf credhub-cli-github-release/credhub-linux-*.tgz
             cp kubectl-s3-release/kubectl builddir/kubectl
             cp helm-s3-release/helm builddir/helm
-            cp yaml2json-github-release/yaml2json-linux-amd64 builddir/yaml2json
+            tar -xzf yaml2json-github-release/yaml2json_*_linux_amd64.tar.gz yaml2json -C builddir
             tar -xzf golangci-lint-release/golangci-lint-*-linux-amd64.tar.gz
             mv golangci-lint-*-linux-amd64/golangci-lint builddir/golangci-lint
             mv bbr-release/bbr-s3-config-validator*-linux-amd64 builddir/bbr-s3-config-validator
