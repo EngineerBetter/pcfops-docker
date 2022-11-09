@@ -20,7 +20,7 @@ COPY terraform cf jq om fly bosh bbl yq credhub certstrap helm yaml2json golangc
 COPY install_binaries.sh .
 RUN ./install_binaries.sh && rm install_binaries.sh
 # Install cosign
-COPY cosign /tmp
+COPY cosign.deb /tmp
 RUN dpkg -i /tmp/cosign.deb
 
 # Configure sources list so that apt-get can find the gcp SDK
