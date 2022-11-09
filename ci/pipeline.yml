@@ -467,10 +467,9 @@ jobs:
           set -euo pipefail
           version=$(cat cosign-github-release/version)
           url="https://github.com/sigstore/cosign/releases/download/v${version}/cosign_${version/v/}_amd64.deb"
-          wget "$url"
-          mv cosign_${version/v/}_amd64.deb cosign
+          wget -q -O cosign/cosign.deb "$url"
   - put: cosign-s3-release
-    params: {file: cosign/cosign_*_amd64.deb}
+    params: {file: cosign/cosign.deb}
 
 - name: build-pcfops-image
   public: true
@@ -620,7 +619,7 @@ jobs:
             tar -C builddir -xzf credhub-cli-github-release/credhub-linux-*.tgz
             cp kubectl-s3-release/kubectl builddir/kubectl
             cp helm-s3-release/helm builddir/helm
-            cp cosign-s3-release/cosign_*_amd64.deb builddir/cosign.deb
+            cp cosign-s3-release/cosign.deb builddir/cosign.deb
             tar -xzf yaml2json-github-release/yaml2json_*_linux_amd64.tar.gz yaml2json -C builddir
             tar -xzf golangci-lint-release/golangci-lint-*-linux-amd64.tar.gz
             mv golangci-lint-*-linux-amd64/golangci-lint builddir/golangci-lint
