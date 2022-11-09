@@ -19,6 +19,9 @@ RUN tar -C /usr/local -xzf go.tar.gz \
 COPY terraform cf jq om fly bosh bbl yq credhub certstrap helm yaml2json golangci-lint bbr kapp kbld ytt kf kubectl /usr/bin/
 COPY install_binaries.sh .
 RUN ./install_binaries.sh && rm install_binaries.sh
+# Install cosign
+COPY cosign /tmp
+RUN dpkg -i /tmp/cosign.deb
 
 # Configure sources list so that apt-get can find the gcp SDK
 RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"  \
@@ -39,12 +42,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Symlinks required by postgres
 RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/postgresql/*/bin/postgres /usr/bin/postgres
-
-# Install cosign
-RUN wget "https://github.com/sigstore/cosign/releases/download/v1.6.0/cosign_1.6.0_amd64.deb" \
- && dpkg -i cosign_1.6.0_amd64.deb \
- && mv /usr/local/bin/cosign-linux-amd64 /usr/local/bin/cosign \
- && rm cosign*.deb
 
 # Install AWS CLI
 RUN unzip -q awscli-exe-linux-x86_64.zip \
