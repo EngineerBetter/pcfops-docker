@@ -40,6 +40,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Symlinks required by postgres
 RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/postgresql/*/bin/postgres /usr/bin/postgres
 
+# Install cosign
+RUN wget "https://github.com/sigstore/cosign/releases/download/v1.6.0/cosign_1.6.0_amd64.deb" \
+ && dpkg -i cosign_1.6.0_amd64.deb \
+ && mv /usr/local/bin/cosign-linux-amd64 /usr/local/bin/cosign \
+ && rm cosign*.deb
+
 # Install AWS CLI
 RUN unzip -q awscli-exe-linux-x86_64.zip \
   && rm awscli-exe-linux-x86_64.zip \
