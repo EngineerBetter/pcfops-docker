@@ -16,7 +16,7 @@ RUN tar -C /usr/local -xzf go.tar.gz \
 
 # Copy in binaries and make sure they are executable
 # CHORE: we're triplicating(!) this list also in install_binaries and verify_image (and missing out there)
-COPY terraform cf jq om fly bosh bbl yq credhub certstrap helm yaml2json golangci-lint bbr kapp kbld ytt kf kubectl /usr/bin/
+COPY terraform cf jq om fly bosh bbl yq credhub certstrap helm yaml2json golangci-lint git-crypt bbr kapp kbld ytt kf kubectl /usr/bin/
 COPY install_binaries.sh .
 RUN ./install_binaries.sh && rm install_binaries.sh
 # Install cosign

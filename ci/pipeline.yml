@@ -113,6 +113,13 @@ resources:
     repository: bosh-bootloader
     access_token: ((github_access_token)) # Avoids rate limits
 
+- name: git-crypt-github-release
+  type: github-release
+  source:
+    owner: agwa
+    repository: git-crypt
+    access_token: ((github_access_token)) # Avoids rate limits
+
 - name: yq-github-release
   type: github-release
   source:
@@ -517,6 +524,10 @@ jobs:
     - get: golang-s3-release
       trigger: true
       passed: [get-golang]
+    - get: git-crypt-github-release
+      trigger: true
+      params:
+        globs: [git-crypt-*-linux-x86_64]
     - get: kf-s3-release
       trigger: true
     - get: aws-cli-s3-release
@@ -580,6 +591,7 @@ jobs:
       - name: bbl-github-release
       - name: yq-github-release
       - name: golang-s3-release
+      - name: git-crypt-github-release
       - name: kf-s3-release
       - name: aws-cli-s3-release
       - name: credhub-cli-github-release
@@ -614,6 +626,7 @@ jobs:
             cp yq-github-release/yq_linux_amd64 builddir/yq
             cp certstrap-github-release/certstrap*linux-amd64 builddir/certstrap
             cp golang-s3-release/go-linux-amd64.tar.gz builddir/go.tar.gz
+            cp git-crypt-github-release/git-crypt-*-linux-x86_64 builddir/git-crypt
             cp kf-s3-release/kf-linux builddir/kf
             cp aws-cli-s3-release/awscli-exe-linux-x86_64.zip builddir/awscli-exe-linux-x86_64.zip
             tar -C builddir -xzf credhub-cli-github-release/credhub-linux-*.tgz
