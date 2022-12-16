@@ -36,6 +36,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   ruby-dev \
   gnupg2 \
   shellcheck \
+  git-crypt \
   google-cloud-sdk \
   google-cloud-sdk-gke-gcloud-auth-plugin \
   && rm -rf /var/lib/apt/lists/*
