@@ -3,7 +3,7 @@ FROM cloudfoundry/cflinuxfs3
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 ARG GO111MODULE=auto
-ARG RUBY_VERSION=2.7.0
+ARG RUBY_VERSION=3.2.0
 
 
 # Copy in GO and AWS source files
@@ -75,7 +75,7 @@ RUN git clone https://github.com/rbenv/rbenv.git /root/.rbenv \
   && git clone https://github.com/rbenv/ruby-build.git /root/.rbenv/plugins/ruby-build \
   && /root/.rbenv/plugins/ruby-build/install.sh \
   && echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh \
-  && echo 'eval "$(rbenv init -)"' >> .bashrc \
+  && echo 'eval "$(rbenv init -)"' >> $HOME/.bashrc \
   && echo 'eval "$(rbenv init -)"' >> $HOME/.bash_profile
 
 ENV CONFIGURE_OPTS --disable-install-doc
