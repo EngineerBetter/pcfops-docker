@@ -15,10 +15,13 @@ RUN tar -C /usr/local -xzf go.tar.gz \
   && mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 
 # Copy in binaries and make sure they are executable
-# CHORE: we're triplicating(!) this list also in install_binaries and verify_image (and missing out there)
-COPY terraform cf jq om fly bosh bbl yq credhub certstrap helm yaml2json golangci-lint bbr kapp kbld ytt kf kubectl /usr/bin/
-COPY install_binaries.sh .
-RUN ./install_binaries.sh && rm install_binaries.sh
+# We need to duplicate the binaries as there's no way to pass a list to COPY
+COPY      bbl bbr bosh certstrap cf credhub fly golangci-lint helm jq kapp kbld kf kubectl om terraform yaml2json yq ytt /usr/bin/
+ENV BINS="bbl bbr bosh certstrap cf credhub fly golangci-lint helm jq kapp kbld kf kubectl om terraform yaml2json yq ytt"
+RUN for b in ${BINS}; do \
+  chmod +x /usr/bin/$b; \
+  done
+
 # Install cosign
 COPY cosign.deb /tmp
 RUN dpkg -i /tmp/cosign.deb
@@ -48,11 +51,10 @@ RUN ln -s /usr/lib/postgresql/*/bin/initdb /usr/bin/initdb && ln -s /usr/lib/pos
 RUN unzip -q awscli-exe-linux-x86_64.zip \
   && rm awscli-exe-linux-x86_64.zip \
   && ./aws/install \
-  && rm -r aws \
-  && aws --version
+  && rm -r aws
 
-RUN go get github.com/onsi/ginkgo \
-  github.com/onsi/gomega \
+RUN go install github.com/onsi/ginkgo/v2/ginkgo@latest && \
+  go get github.com/onsi/gomega \
   gopkg.in/onsi/prolific.v2 \
   gopkg.in/alecthomas/gometalinter.v2 \
   github.com/EngineerBetter/yaml-patch/cmd/yaml-patch \
@@ -89,7 +91,7 @@ RUN bash -l -c 'gem update --system' \
   && bash -l -c 'gem update' \
   && bash -l -c 'gem install --no-document --no-update-sources --verbose cf-uaac' \
   && rm -rf /usr/lib/ruby/gems/2.5.0/cache/ \
-  && rm -rf /root/.rbenv/versions/2.7.0/lib/ruby/gems/2.7.0/cache
+  && rm -rf /root/.rbenv/versions/*/lib/ruby/gems/*/cache
 
 COPY verify_image.sh /tmp/verify_image.sh
 RUN /tmp/verify_image.sh && rm /tmp/verify_image.sh

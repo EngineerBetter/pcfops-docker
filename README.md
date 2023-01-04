@@ -1,5 +1,5 @@
-# docker-image for PCF ops pipeline
-
+# docker-image for [PCF ops pipeline](https://ci.engineerbetter.com/teams/main/pipelines/pcfops-docker)
+![CI](https://ci.engineerbetter.com/api/v1/teams/main/pipelines/pcfops-docker/jobs/build-pcfops-image/badge)
 ## To update the CI pipeline
 
 These instructions assume you are already authenticated with EBCI with the `fly` CLI on your machine.
