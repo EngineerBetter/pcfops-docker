@@ -3,6 +3,8 @@ resource_types:
 - name: http-jq-resource
   type: docker-image
   source:
+    username: ((dockerhub_user))
+    password: ((dockerhub_password))
     repository: qudini/concourse-http-jq-resource
     tag: latest
 
@@ -169,6 +171,8 @@ resources:
 - name: base-image
   type: docker-image
   source:
+    username: ((dockerhub_user))
+    password: ((dockerhub_password))
     repository: cloudfoundry/cflinuxfs3
 
 - name: aws-cli-git
