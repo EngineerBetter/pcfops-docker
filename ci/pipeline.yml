@@ -601,7 +601,10 @@ jobs:
       - name: builddir
       image_resource:
         type: docker-image
-        source: {repository: busybox}
+        source:
+          repository: busybox
+          username: ((dockerhub_user))
+          password: ((dockerhub_password))
       run:
         path: ash
         args:
