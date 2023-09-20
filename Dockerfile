@@ -36,6 +36,7 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"  \
 RUN apt-get update && apt-get install -y --no-install-recommends \
   parallel \
   postgresql \
+  ruby2.5-dev \
   ruby-dev \
   gnupg2 \
   shellcheck \
