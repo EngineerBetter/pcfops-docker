@@ -513,7 +513,7 @@ jobs:
     - get: bbl-github-release
       trigger: true
       params:
-        globs: [bbl-v*_linux_x86-64]
+        globs: [bbl-v*_linux_amd64]
     - get: yq-github-release
       trigger: true
       params:
@@ -617,7 +617,7 @@ jobs:
             tar -C builddir -xzf om-github-release/om-linux-amd64-*.tar.gz
             tar xzf concourse-github-release/fly-*-linux-amd64.tgz -C builddir/
             cp bosh-s3-release/bosh-cli-*-linux-amd64 builddir/bosh
-            cp bbl-github-release/bbl-v*_linux_x86-64 builddir/bbl
+            cp bbl-github-release/bbl-v*_linux_amd64 builddir/bbl
             cp yq-github-release/yq_linux_amd64 builddir/yq
             cp certstrap-github-release/certstrap*linux-amd64 builddir/certstrap
             cp golang-s3-release/go-linux-amd64.tar.gz builddir/go.tar.gz
