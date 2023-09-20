@@ -34,6 +34,7 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"  \
 
 # Install tooling from ubuntu packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
+  libruby2.5 \
   parallel \
   postgresql \
   ruby2.5-dev \
