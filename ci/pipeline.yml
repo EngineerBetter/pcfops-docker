@@ -386,7 +386,7 @@ jobs:
         - |
           set -euo pipefail
           version=$(cat cf-cli-github-release/version)
-          url="https://cli.run.pivotal.io/stable?release=linux64-binary&version=${version}&source=github-rel"
+          url="https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${version}&source=github-rel"
           wget -O cli.tgz "$url"
           tar -C cf -xzf cli.tgz
   - put: cf-cli-s3-release
