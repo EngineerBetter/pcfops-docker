@@ -499,7 +499,7 @@ jobs:
     - get: jq-github-release
       trigger: true
       params:
-        globs: [jq-linux-arm64]
+        globs: [jq-linux-amd64]
     - get: om-github-release
       trigger: true
       params:
@@ -613,7 +613,7 @@ jobs:
             cp -r pcfops-github/. builddir/
             cp terraform-s3-release/terraform builddir/terraform
             cp cf-cli-s3-release/cf builddir/cf
-            cp jq-github-release/jq-linux-arm64 builddir/jq
+            cp jq-github-release/jq-linux-amd64 builddir/jq
             tar -C builddir -xzf om-github-release/om-linux-amd64-*.tar.gz
             tar xzf concourse-github-release/fly-*-linux-amd64.tgz -C builddir/
             cp bosh-s3-release/bosh-cli-*-linux-amd64 builddir/bosh
